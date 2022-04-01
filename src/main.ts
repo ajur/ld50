@@ -3,11 +3,8 @@ import './main.css';
 import { Application } from 'pixi.js';
 import { Pane } from 'tweakpane';
 import { assets } from './assets';
-import { preload } from './preloader';
-import { sounds } from './Sounds';
-import { withGlobals } from './debug';
-import { Splash } from './scenes/splash';
-import { Scene } from './interfaces';
+import { preload, sounds, withGlobals, Scene } from '~/core';
+import { Splash } from './game/splash';
 
 
 preload({assets: assets(), onLoaded, onClicked});

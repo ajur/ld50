@@ -19,4 +19,3 @@ if (import.meta.env.PROD) {
     Have fun and stay safe!
     `);
 }
-

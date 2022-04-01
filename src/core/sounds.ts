@@ -1,7 +1,9 @@
 import { Sound, sound } from "@pixi/sound";
 import { gsap } from "gsap";
 import { Pane } from "tweakpane";
-import { fun, math, storage } from "./utils";
+import { debounce } from "./func";
+import { clamp } from "./math";
+import { localLoadDefault, localSave } from "./storage";
 
 const STORAGE_KEY = "sound_config"
 
@@ -23,9 +25,9 @@ export class Sounds {
     private saveConfig: () => void;
 
     constructor(){
-        this.saveConfig = fun.debounce(() => storage.save(STORAGE_KEY, this.config));
+        this.saveConfig = debounce(() => localSave(STORAGE_KEY, this.config));
 
-        this.config = storage.loadDefault(STORAGE_KEY, {...soundConfigDefaults});
+        this.config = localLoadDefault(STORAGE_KEY, {...soundConfigDefaults});
         
         sound.volumeAll = this.config.volume;
     }
@@ -58,7 +60,7 @@ export class Sounds {
     }
 
     set volume(val: number) {
-        sound.volumeAll = this.config.volume = math.clamp(val, 0, 1);
+        sound.volumeAll = this.config.volume = clamp(val, 0, 1);
         this.saveConfig();
     }
 
@@ -69,7 +71,7 @@ export class Sounds {
     set musicVolume(val: number) {
         if (val === this.config.musicVolume) return;
 
-        const vol = math.clamp(val, 0, 1);
+        const vol = clamp(val, 0, 1);
         
         if (this._currentTrack) {
             this._currentTrack.volume = vol;
