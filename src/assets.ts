@@ -5,6 +5,7 @@ export function assets(): IAddOptions[] {
     return [
         { name: "Haeresletter", url: "Haeresletter.otf"},
         { name: "ld50splash", url: "ld50aniversary.jpeg" },
+        { name: "basicHouse", url: "basicHouse.jpg"}
     ].map(fixBasePath);
 }
 

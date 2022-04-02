@@ -18,11 +18,13 @@
     "vite": "^2.7.2"
   },
   "dependencies": {
+    "@pixi/particle-emitter": "^5.0.4",
     "@pixi/sound": "^4.2.0",
+    "@types/matter-js": "^0.17.7",
     "d3-random": "^3.0.1",
     "gsap": "^3.9.1",
+    "matter-js": "^0.18.0",
     "pixi-filters": "^4.1.6",
-    "pixi-particles": "^4.3.1",
     "pixi-webfont-loader": "^1.0.2",
     "pixi.js": "^6.2.2",
     "tweakpane": "^3.0.7"

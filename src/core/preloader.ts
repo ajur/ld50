@@ -5,6 +5,7 @@ import { IAddOptions, Loader } from 'pixi.js';
 
 Loader.registerPlugin(WebfontLoaderPlugin);
 
+
 export type PreloaderOptions = {
     assets: IAddOptions[],
     onLoaded: Loader.OnCompleteSignal,

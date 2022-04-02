@@ -4,7 +4,6 @@ import * as PIXI from 'pixi.js';
 import * as SOUND from '@pixi/sound';
 import { Pane } from 'tweakpane';
 
-
 export function withGlobals(app: PIXI.Application, menu: Pane) {
     if (import.meta.env.PROD) {
         return;
@@ -27,3 +26,5 @@ export function withGlobals(app: PIXI.Application, menu: Pane) {
     console.log('- MENU - tweakpane, until I replace it with something custom')
     global.MENU = menu;
 }
+
+export const isDebugOn = import.meta.env.DEV;

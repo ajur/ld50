@@ -2,6 +2,7 @@
 export * from './interfaces';
 export * from './preloader';
 export * from './sounds';
+export * from './keyboard';
 
 export * from './debug';
 
