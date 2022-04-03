@@ -1,4 +1,4 @@
-import { Circle, DisplayObject, Graphics, IPointData, ISize, Rectangle } from "pixi.js";
+import { Circle, DisplayObject, IPointData, ISize, Rectangle } from "pixi.js";
 import { enumFromStringValue } from "~/core/func";
 import { Bodies, Body } from "matter-js";
 import { circleWireframe, rectWireframe } from "~/core/display";

@@ -1,3 +1,17 @@
+import { Vector } from "matter-js";
+
+const HANDLED_KEYS = [
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "KeyW",
+    "KeyS",
+    "KeyA",
+    "KeyD",
+    "Space",
+];
+
 
 export class Keyboard {
     private static _initialized = false;
@@ -11,11 +25,22 @@ export class Keyboard {
         window.addEventListener("keyup", Keyboard.keyUp);
     }
 
+    static resetAll() {
+        Keyboard.state.clear();
+    }
+
     private static keyDown(e: KeyboardEvent): void {
-        Keyboard.state.set(e.code, true)
+        if (HANDLED_KEYS.includes(e.code)) {
+            Keyboard.state.set(e.code, true)
+        }
+        else {
+            Keyboard.resetAll();
+        }
     }
     private static keyUp(e: KeyboardEvent): void {
-        Keyboard.state.set(e.code, false)
+        if (Keyboard.state.has(e.code)) {
+            Keyboard.state.set(e.code, false);
+        }
     }
     
     static get up() {
@@ -29,6 +54,27 @@ export class Keyboard {
     }
     static get right() {
         return Keyboard.state.get("ArrowRight") || Keyboard.state.get("KeyD");
+    }
+
+    static get isMoving() {
+        return this.up || this.down || this.left || this.right;
+    }
+
+    static moveVector(): Vector {
+        const v = Vector.create(0, 0);
+        if (Keyboard.up) {
+            v.y -= 1;
+        }
+        if (Keyboard.down) {
+            v.y += 1;
+        }
+        if (Keyboard.left) {
+            v.x -= 1;
+        }
+        if (Keyboard.right) {
+            v.x += 1;
+        }
+        return Vector.normalise(v);
     }
 }
 

@@ -1,9 +1,9 @@
 import { FolderApi, Pane } from "tweakpane";
-import { sounds, isDebugOn } from "~/core";
+import { sounds, isDebugOn, GlobalPointerSteering } from "~/core";
+
 
 let _menu: Pane | null = null;
 let _debug: FolderApi | null = null;
-
 
 export function createMenu(): Pane {
 
@@ -16,9 +16,11 @@ export function createMenu(): Pane {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const container = document.getElementById('menu-container')!
 
-    const pane = new Pane({container});
+    const pane = new Pane({container, title: "Config"});
 
     sounds.addSoundsControlPanel(pane);
+
+    GlobalPointerSteering.addMenu(pane);
 
     if (isDebugOn) {
         _debug = pane.addFolder({title: "Debug"});
@@ -47,3 +49,4 @@ export function addDebugMenu<T>(title: string, addCb: (this: T | null, df: Folde
         addCb.call(context, f);
     }
 }
+

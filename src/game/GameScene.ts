@@ -3,19 +3,18 @@ import { Container, Ticker } from "pixi.js";
 import { Scene } from "~/core";
 import { Player } from "./Player";
 import { House } from "./House";
+import { Keyboard, GlobalPointerSteering } from "~/core";
 
 import basicHouseXMLContents from "./basicHouse.tmx?raw";
 
 
 export class GameScene extends Container implements Scene {
     house: House;
-    
     player: Player;
     
     screenWidth = 0;
     screenHeight = 0;
     physicsEngine: Engine;
-
     
     constructor() {
         super();
@@ -34,17 +33,16 @@ export class GameScene extends Container implements Scene {
 
         Composite.add(world, [this.player.body]);
 
-
         Ticker.shared.add(this.update, this);
     }
     
     resize(width: number, height: number): void {
         this.screenWidth = width;
         this.screenHeight = height;
-        this.moveCamera();
+        this.updateCameraPosition();
     }
 
-    moveCamera() {
+    updateCameraPosition() {
         const cx = this.screenWidth / 2;
         const cy = this.screenHeight / 2;
         
@@ -55,9 +53,20 @@ export class GameScene extends Container implements Scene {
     }
 
     update(dt: number) {
-        this.player.move(dt);
+        this.movePlayer(dt);
+
         Engine.update(this.physicsEngine, Ticker.shared.deltaMS);
         this.player.update();
-        this.moveCamera();
+        
+        this.updateCameraPosition();
+    }
+
+    private movePlayer(dt: number) {
+        if (Keyboard.isMoving) {
+            this.player.move(Keyboard.moveVector(), dt);
+        }
+        else if (GlobalPointerSteering.isMoving) {
+            this.player.move(GlobalPointerSteering.moveVector(), dt);
+        }
     }
 }

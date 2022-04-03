@@ -1,6 +1,8 @@
 import { Bodies, Body, Vector } from "matter-js";
 import { Container, Graphics, IPointData } from "pixi.js";
-import { Keyboard } from "~/core";
+import { FolderApi } from "tweakpane";
+import { addDebugMenu } from "~/menu";
+
 
 export class Player extends Container {
     img: Graphics;
@@ -19,27 +21,12 @@ export class Player extends Container {
             friction: 0.01
         });
         this.position.copyFrom(pos);
+
+        addDebugMenu("house", this.debugMenu, this);
     }
 
-    move(dt: number) {
-        // keyboard controls
-        let f = Vector.create(0, 0);
-        if (Keyboard.up) {
-            f.y -= 1;
-        }
-        if (Keyboard.down) {
-            f.y += 1;
-        }
-        if (Keyboard.left) {
-            f.x -= 1;
-        }
-        if (Keyboard.right) {
-            f.x += 1;
-        }
-        
-        f = Vector.normalise(f);
-        f = Vector.mult(f, dt * this.speed * this.stamina);
-
+    move(vec: Vector, dt = 1.0) {
+        const f = Vector.mult(vec, this.speed * this.stamina * dt);
         Body.applyForce(this.body, this.body.position, f);
     }
 
@@ -53,5 +40,11 @@ export class Player extends Container {
         g.drawCircle(0, 0, 32);
         g.endFill();
         return g;
+    }
+
+    private debugMenu(folder: FolderApi): void {
+        folder.addInput(this, "speed", {min: 0.001, max: 0.1, step: 0.001});
+        folder.addInput(this.body, "frictionAir");
+        folder.addInput(this.body, "friction");
     }
 }

@@ -2,8 +2,8 @@ import './hello.ts';
 import './main.css';
 import { Application } from 'pixi.js';
 import { assets } from './assets';
-import { preload, withGlobals, Scene } from '~/core';
-import { GameScene } from './game/game';
+import { preload, withGlobals, Scene, GlobalPointerSteering } from '~/core';
+import { GameScene } from './game/GameScene';
 import { createMenu } from './menu';
 
 
@@ -16,8 +16,6 @@ document.addEventListener("contextmenu", (e) => {
 preload({assets: assets(), onLoaded, onClicked});
 
 function onLoaded() {
-    const menu = createMenu();
-
     const app = new Application({
         resolution: window.devicePixelRatio || 1,
         autoDensity: true,
@@ -27,7 +25,10 @@ function onLoaded() {
     const appElem = document.querySelector<HTMLDivElement>('#app') ?? document.body;
     appElem.appendChild(app.view);
 
+    GlobalPointerSteering.initialize(app.stage);
 
+    const menu = createMenu();
+    
     const scene: Scene = new GameScene();//new Splash();
     app.stage.addChild(scene);
     app.renderer.on('resize', scene.resize, scene);
