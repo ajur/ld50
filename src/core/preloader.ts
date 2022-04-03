@@ -2,6 +2,7 @@
 import { gsap } from "gsap";
 import { WebfontLoaderPlugin } from "pixi-webfont-loader";
 import { IAddOptions, Loader } from 'pixi.js';
+import { msg } from '.';
 
 Loader.registerPlugin(WebfontLoaderPlugin);
 
@@ -31,11 +32,13 @@ export function preload({assets, onLoaded, onClicked, onRevealed, revealTime = 0
     const preloaderRevealed = () => {
         gsap.killTweensOf(logoPath.style);
         preloaderDiv.remove();
+        msg.emit("preloaderClosed");
         onRevealed?.();
     }
     
     const preloaderClicked = () => {
         gsap.to(preloaderDiv!, {duration: revealTime, top: '-100%', onComplete: preloaderRevealed});
+        msg.emit("preloaderClosing");
         onClicked?.();
     }
     
@@ -43,6 +46,7 @@ export function preload({assets, onLoaded, onClicked, onRevealed, revealTime = 0
         loader.onProgress.detachAll();
         footerDiv.innerHTML = '<span class="blink">ready</div>'
         preloaderDiv.addEventListener('pointerdown', preloaderClicked, {once: true});
+        msg.emit("assetsLoaded");
         onLoaded(...args);
     }
 

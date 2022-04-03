@@ -2,6 +2,9 @@ import { Circle, DisplayObject, IPointData, ISize, Rectangle } from "pixi.js";
 import { enumFromStringValue } from "~/core/func";
 import { Bodies, Body } from "matter-js";
 import { circleWireframe, rectWireframe } from "~/core/display";
+import { randomInt } from "d3-random";
+import { clamp } from "~/core/math";
+import { CATEGORY_WALLS, COLORS } from "~/consts";
 
 export class HouseMapLoader {
     static fromObjectsFromString(tmxContents: string): MapObjects {
@@ -10,13 +13,42 @@ export class HouseMapLoader {
 }
 
 export class Room extends Rectangle {
-    roomType: RoomType;
-    roomName: string;
+    readonly roomType: RoomType;
+    readonly roomName: string;
+    xPosRng: () => number;
+    yPosRng: () => number;
 
     constructor(x: number, y: number, w: number, h: number, type: string, name: string) {
         super(x, y, w, h);
         this.roomType = enumFromStringValue(RoomType, type);
         this.roomName = name;
+
+        this.xPosRng = randomInt(this.left, this.right);
+        this.yPosRng = randomInt(this.top, this.bottom);
+    }
+
+    get bottom(): number {
+        return this.y + this.height / 2;
+    }
+    get top(): number {
+        return this.y - this.height / 2;
+    }
+    get left(): number {
+        return this.x - this.width / 2;
+    }
+    get right(): number {
+        return this.x + this.width / 2;
+    }
+
+    contains(x: number, y: number): boolean {
+        return x >= this.left && x < this.right && y >= this.top && y < this.bottom;
+    }
+
+    randomPoint(offset = 0): IPointData {
+        return {
+            x: clamp(this.xPosRng(), this.left + offset, this.right - offset),
+            y: clamp(this.yPosRng(), this.top + offset, this.bottom - offset)
+        };
     }
 }
 
@@ -74,9 +106,12 @@ export class RectWall extends Rectangle implements Wall {
     constructor(x: number, y: number, width: number, height: number) {
         super(x, y, width, height);
         this.body = Bodies.rectangle(x, y, width, height, {
-            isStatic: true
+            isStatic: true,
+            collisionFilter: {
+                category: CATEGORY_WALLS
+            }
         });
-        this.displayObject = rectWireframe({x, y, width, height, color: 0xff0000});
+        this.displayObject = rectWireframe({x, y, width, height, color: COLORS.RED});
     }
 }
 
@@ -90,9 +125,12 @@ export class CircleWall extends Circle implements Wall {
         this.width = radius * 2;
         this.height = radius * 2;
         this.body = Bodies.circle(x, y, radius, {
-            isStatic: true
+            isStatic: true,
+            collisionFilter: {
+                category: CATEGORY_WALLS
+            }
         });
-        this.displayObject = circleWireframe({x, y, radius, color: 0xff0000});
+        this.displayObject = circleWireframe({x, y, radius, color: COLORS.RED});
     }
 }
 

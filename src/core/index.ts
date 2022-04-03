@@ -4,6 +4,7 @@ export * from './preloader';
 export * from './sounds';
 export * from './keyboard';
 export * from './mouse';
+export * from './msg';
 
 export * from './debug';
 

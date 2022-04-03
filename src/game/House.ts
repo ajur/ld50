@@ -50,10 +50,6 @@ export class House extends Container {
         return this.guestsSpawns[this.guestsSpawnRng()];
     }
 
-    getInitialGeustsCount(): number {
-        return this.guestsSpawns.length * 2;
-    }
-
     getWallsBodies(): Body[] {
         return this.walls.map(w => w.body);
     }

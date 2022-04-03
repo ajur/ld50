@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="58">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="64">
  <imagelayer id="3" name="bkg" locked="1">
   <image source="../../public/background.jpg" width="2048" height="2048"/>
  </imagelayer>
@@ -48,6 +48,7 @@
   <object id="42" name="Living room" type="livingroom" x="1088" y="1088" width="672" height="560"/>
   <object id="43" name="Hallway" type="hall" x="768" y="608" width="304" height="1040"/>
   <object id="44" name="Garden" type="garden" x="288" y="112" width="1360" height="464"/>
+  <object id="61" name="Frontyard" type="garden" x="208" y="1680" width="1552" height="336"/>
  </objectgroup>
  <objectgroup color="#ef3128" id="4" name="spawn">
   <object id="37" name="player_1" type="player" x="1440" y="1312">
@@ -81,6 +82,21 @@
    <point/>
   </object>
   <object id="57" name="pb_2" type="guest" x="320" y="1392">
+   <point/>
+  </object>
+  <object id="58" name="b_1" type="guest" x="592" y="816">
+   <point/>
+  </object>
+  <object id="59" name="g_1" type="guest" x="528" y="416">
+   <point/>
+  </object>
+  <object id="60" name="g_2" type="guest" x="1536" y="224">
+   <point/>
+  </object>
+  <object id="62" name="f_2" type="guest" x="1424" y="1888">
+   <point/>
+  </object>
+  <object id="63" name="f_1" type="guest" x="784" y="1808">
    <point/>
   </object>
  </objectgroup>

@@ -118,7 +118,8 @@ export class GlobalPointerSteering {
         this.pointerPos.visible = this.showPointerHelper;
 
         const vpmn = vpm / this.vectorMaxMagnitude;
-        this.currentMoveVector = Vector.mult(normed, vpmn);
+        const vpmn3 = vpmn ** 2;  // scale for better progression
+        this.currentMoveVector = Vector.mult(normed, vpmn3);
     }
 
     private pointerHelper(radius: number): Graphics {
