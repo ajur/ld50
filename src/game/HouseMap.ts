@@ -35,11 +35,37 @@ export interface Wall extends IPointData, ISize {
     displayObject: DisplayObject;
 }
 
+export enum SpawnPointType {
+    PLAYER = "player",
+    GUEST = "guest"
+}
+
+export class SpawnPoint implements IPointData {
+    x: number;
+    y: number;
+    type: SpawnPointType;
+    name: string;
+
+    constructor(x: number, y: number, type: string, name = "") {
+        this.x = x;
+        this.y = y;
+        this.type = enumFromStringValue(SpawnPointType, type);
+        this.name = name;
+    }
+
+    static isPlayer(point: SpawnPoint) {
+        return point.type == SpawnPointType.PLAYER;
+    }
+
+    static isGuest(point: SpawnPoint) {
+        return point.type == SpawnPointType.GUEST;
+    }
+}
 
 export interface MapObjects {
     walls: Wall[],
     rooms: Room[],
-    player: PlayerSpec
+    spawn: SpawnPoint[]
 }
 
 export class RectWall extends Rectangle implements Wall {
@@ -70,14 +96,9 @@ export class CircleWall extends Circle implements Wall {
     }
 }
 
-export interface PlayerSpec {
-    start: IPointData
-}
-
 export function loadMapFromTMXString(xmlstr: string): MapObjects {
     const parser = new DOMParser();
     const doc = parser.parseFromString(xmlstr, "application/xml");
-    console.log(doc);
 
     const objects: Partial<MapObjects> = {};
 
@@ -91,8 +112,8 @@ export function loadMapFromTMXString(xmlstr: string): MapObjects {
             case "rooms":
                 objects.rooms = parseRooms(group);
                 break;
-            case "player":
-                objects.player = parsePlayer(group);
+            case "spawn":
+                objects.spawn = parseSpawns(group);
                 break;
         }
     });
@@ -125,12 +146,13 @@ function parseRooms(group: Element): Room[] | undefined {
     });
 }
 
-function parsePlayer(group: Element): PlayerSpec {
-    const startNode = group.querySelector('object[name=start]');
-    const start = startNode ? getPointData(startNode) : {x: 0, y: 0};
-    return {
-        start
-    }
+function parseSpawns(group: Element): SpawnPoint[] {
+    return Array.from(group.getElementsByTagName("object")).map(obj => {
+        const {x, y} = getPointData(obj);
+        const pointType = obj.getAttribute("type") || "";
+        const pointName = obj.getAttribute("name") || "";
+        return new SpawnPoint(x, y, pointType, pointName);
+    });
 }
 
 function getPointData(obj: Element): IPointData {

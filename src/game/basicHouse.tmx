@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="45">
- <imagelayer id="3" name="bkg">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="58">
+ <imagelayer id="3" name="bkg" locked="1">
   <image source="../../public/background.jpg" width="2048" height="2048"/>
  </imagelayer>
- <objectgroup color="#b40b080c" id="2" name="walls">
+ <objectgroup color="#b40b080c" id="2" name="walls" locked="1">
   <object id="1" x="176" y="0" width="112" height="576"/>
   <object id="2" x="288" y="0" width="1360" height="112"/>
   <object id="3" x="1648" y="0" width="144" height="576"/>
@@ -40,7 +40,7 @@
    <ellipse/>
   </object>
  </objectgroup>
- <objectgroup color="#6c00fdff" id="5" name="rooms">
+ <objectgroup color="#6c00fdff" id="5" name="rooms" locked="1">
   <object id="38" name="Bathroom" type="bathroom" x="208" y="608" width="544" height="352"/>
   <object id="39" name="Kitchen" type="kitchen" x="1088" y="608" width="672" height="464"/>
   <object id="40" name="Your bedroom" type="bedroom" x="208" y="976" width="544" height="304"/>
@@ -49,8 +49,38 @@
   <object id="43" name="Hallway" type="hall" x="768" y="608" width="304" height="1040"/>
   <object id="44" name="Garden" type="garden" x="288" y="112" width="1360" height="464"/>
  </objectgroup>
- <objectgroup color="#ef3128" id="4" name="player">
-  <object id="37" name="start" x="928" y="1440">
+ <objectgroup color="#ef3128" id="4" name="spawn">
+  <object id="37" name="player_1" type="player" x="1440" y="1312">
+   <point/>
+  </object>
+  <object id="45" name="lr_1" type="guest" x="1344" y="1200">
+   <point/>
+  </object>
+  <object id="46" name="lr_2" type="guest" x="1520" y="1488">
+   <point/>
+  </object>
+  <object id="48" name="lr_3" type="guest" x="1216" y="1408">
+   <point/>
+  </object>
+  <object id="49" name="k_1" type="guest" x="1232" y="960">
+   <point/>
+  </object>
+  <object id="50" name="k_2" type="guest" x="1536" y="800">
+   <point/>
+  </object>
+  <object id="51" name="h_1" type="guest" x="928" y="1056">
+   <point/>
+  </object>
+  <object id="53" name="b_1" type="guest" x="624" y="1168">
+   <point/>
+  </object>
+  <object id="55" name="b_2" type="guest" x="368" y="1104">
+   <point/>
+  </object>
+  <object id="56" name="pb_1" type="guest" x="624" y="1568">
+   <point/>
+  </object>
+  <object id="57" name="pb_2" type="guest" x="320" y="1392">
    <point/>
   </object>
  </objectgroup>

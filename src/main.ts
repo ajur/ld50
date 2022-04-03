@@ -29,7 +29,7 @@ function onLoaded() {
 
     const menu = createMenu();
     
-    const scene: Scene = new GameScene();//new Splash();
+    const scene: Scene = new GameScene();
     app.stage.addChild(scene);
     app.renderer.on('resize', scene.resize, scene);
     scene.resize(app.screen.width, app.screen.height);

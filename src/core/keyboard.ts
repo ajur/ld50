@@ -10,6 +10,7 @@ const HANDLED_KEYS = [
     "KeyA",
     "KeyD",
     "Space",
+    "ShiftLeft",
 ];
 
 
