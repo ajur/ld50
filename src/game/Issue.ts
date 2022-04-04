@@ -27,7 +27,7 @@ export class Issue extends Container {
     constructor(pos: IPointData, isHard = false) {
         super();
 
-        this.isHard = true;
+        this.isHard = isHard;
 
         this.baseResolutionTime *= 2;
         this.resolutionTimeLeft = this.baseResolutionTime;
@@ -82,6 +82,13 @@ export class Issue extends Container {
         gsap.killTweensOf(this.scale);
         gsap.to(this.scale, {x: 0, y: 0, duration: 0.1, onComplete: () => {this.destroy()}});
         msg.emit("issueResolved", this);
+    }
+
+    get groundedProgress(): number {
+        return this.isHard ? 5 : 2;
+    }
+    get groundedDelayed(): number {
+        return 2;
     }
 
     private createImg(isHard: boolean): DisplayObject {

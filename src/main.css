@@ -76,7 +76,7 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /* Tweakpane styles, see https://cocopon.github.io/tweakpane/theming.html */

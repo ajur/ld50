@@ -24,6 +24,7 @@
     "gsap": "^3.9.1",
     "matter-js": "^0.18.0",
     "pixi-filters": "^4.1.6",
+    "pixi-tagged-text": "^3.5.1",
     "pixi-webfont-loader": "^1.0.2",
     "pixi.js": "^6.2.2",
     "tweakpane": "^3.0.7"

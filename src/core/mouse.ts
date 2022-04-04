@@ -8,7 +8,8 @@ import { clamp } from "./math";
 const STORAGE_KEY = "pointer_config";
 
 export class GlobalPointerSteering {
-    private stage: Container;
+    private eventSource: Container;
+    private paintTarget: Container;
     private _isDown = false;
     private pointerStart: Graphics;
     private pointerPos: Graphics;
@@ -18,11 +19,11 @@ export class GlobalPointerSteering {
     
     private static instance: GlobalPointerSteering | null = null;
     
-    public static initialize(stage: Container) {
+    public static initialize(eventSource: Container, paintTarget: Container) {
         if (GlobalPointerSteering.instance) {
             throw new Error("Cannot initialize twice!");
         }
-        GlobalPointerSteering.instance = new GlobalPointerSteering(stage);
+        GlobalPointerSteering.instance = new GlobalPointerSteering(eventSource, paintTarget);
     }
 
     public static addMenu(pane: Pane) {
@@ -53,17 +54,18 @@ export class GlobalPointerSteering {
         return GlobalPointerSteering.instance.currentMoveVector;
     }
     
-    private constructor(stage: Container) {
-        this.stage = stage;
+    private constructor(eventSource: Container, paintTarget: Container) {
+        this.eventSource = eventSource;
+        this.paintTarget = paintTarget;
 
-        this.stage.on("pointerdown", this.pointerdown, this);
-        this.stage.on("pointermove", this.pointermove, this);
-        this.stage.on("pointerup", this.pointerup, this);
-        this.stage.on("pointerout", this.pointerup, this);
-        this.stage.on("pointerupoutside", this.pointerup, this);
+        this.eventSource.on("pointerdown", this.pointerdown, this);
+        this.eventSource.on("pointermove", this.pointermove, this);
+        this.eventSource.on("pointerup", this.pointerup, this);
+        this.eventSource.on("pointerout", this.pointerup, this);
+        this.eventSource.on("pointerupoutside", this.pointerup, this);
 
-        this.pointerStart = stage.addChild(this.pointerHelper(this.vectorMaxMagnitude));
-        this.pointerPos = stage.addChild(this.pointerHelper(16));
+        this.pointerStart = paintTarget.addChild(this.pointerHelper(this.vectorMaxMagnitude));
+        this.pointerPos = paintTarget.addChild(this.pointerHelper(16));
 
         this._showPointerHelper = localLoadDefault(STORAGE_KEY, true);
 
@@ -71,11 +73,11 @@ export class GlobalPointerSteering {
     }
 
     public enable() {
-        this.stage.interactive = true;
+        this.eventSource.interactive = true;
     }
 
     public disable() {
-        this.stage.interactive = false;
+        this.eventSource.interactive = false;
     }
 
     public get showPointerHelper(): boolean {
@@ -92,7 +94,7 @@ export class GlobalPointerSteering {
 
         this.pointerStart.position.copyFrom(evt.data.global);
         this.pointerStart.visible = this.showPointerHelper;
-        this.stage.addChild(this.pointerStart, this.pointerPos);
+        this.paintTarget.addChild(this.pointerStart, this.pointerPos);
         Vector.mult(this.currentMoveVector, 0);
     }
     private pointerup() {

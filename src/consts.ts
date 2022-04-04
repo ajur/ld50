@@ -1,12 +1,13 @@
 
 // colors
 export const COLORS = {
+    WHITE: 0xfef9ef,
     RED: 0xff595e,
     YELLOW: 0xffca3a,
     GREEN: 0x8ac926,
     BLUE: 0x1982c4,
     VIOLET: 0x6a4c93,
-    BLACK: 0x023047
+    BLACK: 0x202c39
 }
 
 
@@ -17,6 +18,8 @@ export const COLOR_HARD_ISSUE = COLORS.RED;
 export const COLOR_ISSUE_PROGRESS = COLORS.GREEN;
 export const COLOR_GUEST = COLORS.VIOLET;
 export const COLOR_TIMER = COLORS.RED;
+
+export const MAP_BKG_COLOR = 0xd2d2d2;
 
 
 // collision categories

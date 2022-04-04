@@ -32,6 +32,7 @@ export class House extends Container {
 
         this._wallsContainer = this.addChild(new Container);
         this._wallsContainer.addChild(...this.walls.map(w => w.displayObject));
+        this._wallsContainer.visible = false;
 
         addDebugMenu("house", this.debugMenu, this);
     }

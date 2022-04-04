@@ -10,6 +10,7 @@ import { IssueSpawner } from "./IssueSpawner";
 import { Issue } from "./Issue";
 import { CATEGORY_ISSUES } from "~/consts";
 import { randomInt } from "d3-random";
+import { clamp } from "~/core/math";
 
 
 type LevelSpec = [string, string];
@@ -31,7 +32,10 @@ export class GameScene extends Container implements Scene {
     screenHeight = 0;
 
     resolvedIssues = 0;
-    nextGuestAfterResolvedIssues = 10;
+    nextGuestAfterResolvedIssues = 5;
+
+    playTime = 0;
+    groundedProgress = 100;
 
     isPaused = true;
     
@@ -79,14 +83,17 @@ export class GameScene extends Container implements Scene {
     }
 
     update() {
+        const deltaMS = Ticker.shared.deltaMS;
         if (!this.isPaused) {
             this.player.move();
-            this.guests.forEach(g => g.update(Ticker.shared.deltaMS));
-            this.issueSpawner.update(Ticker.shared.deltaMS);
-            this.issues.forEach(issue => issue.update(Ticker.shared.deltaMS));
+            this.guests.forEach(g => g.update(deltaMS));
+            this.issueSpawner.update(deltaMS);
+            this.issues.forEach(issue => issue.update(deltaMS));
+            this.playTime += deltaMS;
+            msg.emit("playTimeUpdated", this.playTime);
         }
         
-        Engine.update(this.physicsEngine, Ticker.shared.deltaMS);
+        Engine.update(this.physicsEngine, deltaMS);
         
         this.player.updatePosition();
         this.guests.forEach(g => g.updatePosition());
@@ -98,6 +105,22 @@ export class GameScene extends Container implements Scene {
         msg.emit("issuesCounterChanged", this.issues.size);
         msg.emit("resolvedIssuesCounterChanged", this.resolvedIssues);
         msg.emit("guestsCountChanged", this.guests.length);
+        this. emitGameProgress();
+    }
+
+    private gameOver() {
+        this.isPaused = true;
+        msg.emit("gameOver", {
+            resolved: this.resolvedIssues,
+            left: this.issues.size,
+            guests: this.guests.length,
+            time: this.playTime
+        });
+    }
+
+    private emitGameProgress() {
+        const progress = clamp(100 - this.groundedProgress, 0, 100) / 100;
+        msg.emit("groundedProgressChanged", progress);
     }
 
     private addHouse([sprite, xmlraw]: LevelSpec): House {
@@ -128,6 +151,12 @@ export class GameScene extends Container implements Scene {
         this.issuesLayer.addChild(issue);
         Composite.add(this.physicsEngine.world, [issue.body]);
         msg.emit("issuesCounterChanged", this.issues.size);
+        
+        this.groundedProgress -= issue.groundedProgress;
+        this.emitGameProgress();
+        if (this.groundedProgress <= 0) {
+            this.gameOver();
+        }
     }
 
     private issueResolved(issue: Issue) {
@@ -137,11 +166,14 @@ export class GameScene extends Container implements Scene {
 
         this.resolvedIssues += 1;
         msg.emit("resolvedIssuesCounterChanged", this.resolvedIssues);
-        if (this.resolvedIssues > this.nextGuestAfterResolvedIssues) {
-            this.nextGuestAfterResolvedIssues += randomInt(6,10)();
+        if (this.resolvedIssues >= this.nextGuestAfterResolvedIssues) {
+            this.nextGuestAfterResolvedIssues += randomInt(4,8)();
             this.guests.push(this.addGuest());
             msg.emit("guestsCountChanged", this.guests.length);
         }
+
+        this.groundedProgress += issue.groundedDelayed;
+        this.emitGameProgress();
     }
 
     private onCollisionEvent(evt: IEventCollision<Engine>): void {
