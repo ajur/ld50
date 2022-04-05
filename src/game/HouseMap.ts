@@ -3,13 +3,20 @@ import { enumFromStringValue } from "~/core/func";
 import { Bodies, Body } from "matter-js";
 import { circleWireframe, rectWireframe } from "~/core/display";
 import { randomInt } from "d3-random";
-import { clamp } from "~/core/math";
+import { center, clamp } from "~/core/math";
 import { CATEGORY_WALLS, COLORS } from "~/consts";
+import { IRect } from "~/core";
 
 export class HouseMapLoader {
     static fromObjectsFromString(tmxContents: string): MapObjects {
         return loadMapFromTMXString(tmxContents);
     }
+}
+
+export interface MapObjects {
+    walls: Wall[],
+    rooms: Room[],
+    spawn: SpawnPoint[]
 }
 
 export class Room extends Rectangle {
@@ -25,23 +32,6 @@ export class Room extends Rectangle {
 
         this.xPosRng = randomInt(this.left, this.right);
         this.yPosRng = randomInt(this.top, this.bottom);
-    }
-
-    get bottom(): number {
-        return this.y + this.height / 2;
-    }
-    get top(): number {
-        return this.y - this.height / 2;
-    }
-    get left(): number {
-        return this.x - this.width / 2;
-    }
-    get right(): number {
-        return this.x + this.width / 2;
-    }
-
-    contains(x: number, y: number): boolean {
-        return x >= this.left && x < this.right && y >= this.top && y < this.bottom;
     }
 
     randomPoint(offset = 0): IPointData {
@@ -63,11 +53,6 @@ export enum RoomType {
     EXIT = "exit"
 }
 
-
-export interface Wall extends IPointData, ISize {
-    body: Body;
-    displayObject: DisplayObject;
-}
 
 export enum SpawnPointType {
     PLAYER = "player",
@@ -96,10 +81,10 @@ export class SpawnPoint implements IPointData {
     }
 }
 
-export interface MapObjects {
-    walls: Wall[],
-    rooms: Room[],
-    spawn: SpawnPoint[]
+export interface Wall extends IPointData, ISize {
+    body: Body;
+    displayObject: DisplayObject;
+    contains(x: number, y: number): boolean;
 }
 
 export class RectWall extends Rectangle implements Wall {
@@ -107,13 +92,14 @@ export class RectWall extends Rectangle implements Wall {
     displayObject: DisplayObject;
     constructor(x: number, y: number, width: number, height: number) {
         super(x, y, width, height);
-        this.body = Bodies.rectangle(x, y, width, height, {
+        const {x: cx, y: cy} = center(x, y, width, height);
+        this.body = Bodies.rectangle(cx, cy, width, height, {
             isStatic: true,
             collisionFilter: {
                 category: CATEGORY_WALLS
             }
         });
-        this.displayObject = rectWireframe({x, y, width, height, color: COLORS.RED});
+        this.displayObject = rectWireframe({x: cx, y: cy, width, height, color: COLORS.RED});
     }
 }
 
@@ -168,34 +154,36 @@ export function loadMapFromTMXString(xmlstr: string): MapObjects {
 function parseWalls(group: Element): Wall[] {
     return Array.from(group.getElementsByTagName("object")).map(obj => {
         const isEllipse = !!obj.querySelector('ellipse');
-        const {x, y, width, height} = getCenteredObjectSpec(obj);
+        const {x, y, width, height} = getObjectSpec(obj);
 
         if (!isEllipse) {
             return new RectWall(x, y, width, height);
         }
         else {
-            return new CircleWall(x, y, Math.min(width, height) / 2);
+            const r = Math.min(width, height) / 2;
+            const {x: cx, y: cy} = center(x, y, width, height);
+            return new CircleWall(cx, cy, r);
         }
     })
 }
 
 function parseRooms(group: Element): Room[] | undefined {
     return Array.from(group.getElementsByTagName("object")).map(obj => {
-        const {x, y, width, height} = getCenteredObjectSpec(obj);
-        const roomType = obj.getAttribute("type") || "";
-        const roomName = obj.getAttribute("name") || "";
-
-        return new Room(x, y, width, height, roomType, roomName);
+        const {x, y, width, height, type, name} = getObjectSpec(obj);
+        return new Room(x, y, width, height, type, name);
     });
 }
 
 function parseSpawns(group: Element): SpawnPoint[] {
     return Array.from(group.getElementsByTagName("object")).map(obj => {
-        const {x, y} = getPointData(obj);
-        const pointType = obj.getAttribute("type") || "";
-        const pointName = obj.getAttribute("name") || "";
-        return new SpawnPoint(x, y, pointType, pointName);
+        const {x, y, name, type} = getObjectSpec(obj);
+        return new SpawnPoint(x, y, type, name);
     });
+}
+
+interface ObjectSpec extends IRect {
+    type: string,
+    name: string
 }
 
 function getPointData(obj: Element): IPointData {
@@ -212,15 +200,11 @@ function getSizeData(obj: Element): ISize {
     }
 }
 
-interface ObjectSpec extends IPointData, ISize {}
-
-function getCenteredObjectSpec(obj: Element): ObjectSpec {
-    const {x, y} = getPointData(obj);
-    const {width, height} = getSizeData(obj);
+function getObjectSpec(obj: Element): ObjectSpec {
     return {
-        x: x + width / 2,
-        y: y + height / 2,
-        width,
-        height
+        ...getPointData(obj),
+        ...getSizeData(obj),
+        type: obj.getAttribute("type") || "",
+        name: obj.getAttribute("name") || ""
     }
 }

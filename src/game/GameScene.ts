@@ -54,7 +54,7 @@ export class GameScene extends Container implements Scene {
         this.player = this.addPlayer();
 
         this.issues = new Map<number, Issue>();
-        this.issueSpawner = new IssueSpawner(this.house.rooms, this.guests);
+        this.issueSpawner = new IssueSpawner(this.house, this.guests);
         this.issueSpawner.on("spawnedIssue", this.spawnedIssue, this);
         msg.on("issueResolved", this.issueResolved, this);
 

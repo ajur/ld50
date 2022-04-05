@@ -1,12 +1,12 @@
 import { EventEmitter } from "@pixi/utils";
 import { Guest } from "./Guest";
-import { Room } from "./HouseMap";
 import { randomInt, randomUniform } from "d3-random";
 import { Issue } from "./Issue";
 import { msg } from "~/core";
+import { House } from "./House";
 
 export class IssueSpawner extends EventEmitter {
-    private rooms: Room[];
+    private house: House;
     private guests: Guest[];
 
     private timeFromLastSpawn: number;
@@ -14,9 +14,9 @@ export class IssueSpawner extends EventEmitter {
     private hardIssueChance = 0.001;
     private rng01: () => number;
 
-    constructor(rooms: Room[], guests: Guest[]) {
+    constructor(house: House, guests: Guest[]) {
         super();
-        this.rooms = rooms;
+        this.house = house;
         this.guests = guests;
 
         this.timeFromLastSpawn = 0;
@@ -41,15 +41,9 @@ export class IssueSpawner extends EventEmitter {
     }
 
     private spawnIssue(guest: Guest, forceHard = false) {
-        const room = this.rooms.find(r => r.contains(guest.x, guest.y));
-
-        if (!room)
-            return;
-        
-            console.log('last spawn', this.timeFromLastSpawn)
         this.timeFromLastSpawn = 0;
 
-        const pos = room.randomPoint(Issue.margin)
+        const pos = this.house.randomPointNearGuest(guest);
 
         const hardIssueChanceWaged = this.hardIssueChance * this.guests.length;
         const isHard = forceHard || (this.rng01() < hardIssueChanceWaged);

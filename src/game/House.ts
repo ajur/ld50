@@ -4,6 +4,7 @@ import { addDebugMenu } from "~/menu";
 import { FolderApi } from "tweakpane";
 import { Body } from "matter-js";
 import { randomInt } from "d3-random";
+import { Guest } from "./Guest";
 
 export class House extends Container {
     readonly walls: Wall[];
@@ -55,6 +56,29 @@ export class House extends Container {
         return this.walls.map(w => w.body);
     }
 
+    randomPointNearGuest(guest: Guest): IPointData {
+        const room = this.rooms.find(r => r.contains(guest.x, guest.y));
+        if (room){ 
+            for(let i = 0; i < 5; ++i) {
+                const pos = room.randomPoint();
+                if (this.notBlocked(pos)) {
+                    return pos;
+                }
+            }
+        }
+        // fallback
+        return guest.position;
+    }
+
+    private notBlocked(pos: IPointData): boolean {
+        for (const wall of this.walls) {
+            if (wall.contains(pos.x, pos.y)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     private debugMenu(folder: FolderApi): void {
         folder.addInput(this._wallsContainer, "visible", {label: "show walls"});
     }
