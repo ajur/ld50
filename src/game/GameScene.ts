@@ -4,17 +4,16 @@ import { msg, Scene } from "~/core";
 import { Player } from "./Player";
 import { House } from "./House";
 import { Guest } from "./Guest";
-
-import basicHouseXMLContents from "./basicHouse.tmx?raw";
 import { IssueSpawner } from "./IssueSpawner";
 import { Issue } from "./Issue";
 import { CATEGORY_ISSUES } from "~/consts";
 import { randomInt } from "d3-random";
 import { clamp } from "~/core/math";
 
+import basicHouseXMLContents from "./house2.tmx?raw";
 
 type LevelSpec = [string, string];
-const LEVEL_SPEC: LevelSpec = ["basicHouse", basicHouseXMLContents];
+const LEVEL_SPEC: LevelSpec = ["house2", basicHouseXMLContents];
 
 
 export class GameScene extends Container implements Scene {

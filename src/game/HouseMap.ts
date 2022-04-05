@@ -58,7 +58,9 @@ export enum RoomType {
     BEDROOM = "bedroom",
     LIVINGROOM = "livingroom",
     HALL = "hall",
-    GARDEN = "garden"
+    GARDEN = "garden",
+    GARAGE = "garage",
+    EXIT = "exit"
 }
 
 
@@ -145,7 +147,10 @@ export function loadMapFromTMXString(xmlstr: string): MapObjects {
         const groupName = group.getAttribute("name");
         switch(groupName) {
             case "walls": 
-                objects.walls = parseWalls(group);
+                objects.walls = (objects.walls || []).concat(parseWalls(group));
+                break;
+            case "furniture":
+                objects.walls = (objects.walls || []).concat(parseWalls(group));
                 break;
             case "rooms":
                 objects.rooms = parseRooms(group);

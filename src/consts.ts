@@ -19,7 +19,7 @@ export const COLOR_ISSUE_PROGRESS = COLORS.GREEN;
 export const COLOR_GUEST = COLORS.VIOLET;
 export const COLOR_TIMER = COLORS.RED;
 
-export const MAP_BKG_COLOR = 0xd2d2d2;
+export const MAP_BKG_COLOR = 0xf3f3f5;
 
 
 // collision categories
