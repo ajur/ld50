@@ -13,9 +13,21 @@ export function debounce<P extends unknown[]>(func: DebouncedFunction<P>, waitMS
 }
 
 export function enumFromStringValue<T>(enm: { [s: string]: T }, value: string): T {
-    if ((Object.values(enm) as unknown as string[]).includes(value)) {
+    const e = enumFromString(enm, value);
+    if (e) {
+        return e;
+    }
+    throw new Error("Unknown enum " + enm + " value " + value)
+}
+
+export function enumFromString<T>(enm: { [s: string]: T }, value: string): T | undefined {
+    if (enumIncludes(enm, value)) {
         return value as unknown as T;
     } else {
-        throw new Error("Unknown enum " + enm + " value " + value)
+        return undefined;
     }
+}
+
+export function enumIncludes<T>(enm: { [s: string]: T }, value: string): boolean {
+    return (Object.values(enm) as unknown as string[]).includes(value);
 }

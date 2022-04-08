@@ -1,4 +1,4 @@
-import { DisplayObject, Graphics } from "pixi.js";
+import { DisplayObject, Graphics, IPointData } from "pixi.js";
 
 
 /** return obj scale to fill given dimensions */
@@ -94,6 +94,20 @@ export function circleWireframe({
     g.drawCircle(0, 0, radius);
     g.endFill();
 
+    g.position.set(x, y);
+
+    return g;
+}
+
+export function lineWireframe(p0: IPointData, p1: IPointData, color = 0x0): Graphics {
+    const {x, y} = p0;
+    const {x: x1, y: y1} = p1;
+    
+    const g = new Graphics();
+    g.lineStyle(1, color, 1, 0, true);
+    g.moveTo(0,0);
+    g.lineTo(x1 - x, y1 - y);
+    
     g.position.set(x, y);
 
     return g;

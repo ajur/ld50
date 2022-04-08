@@ -3,12 +3,13 @@ import { COLORS, COLOR_TEXT } from "~/consts";
 import { msg, Scene } from "~/core";
 
 
-
 export class HUD extends Container implements Scene {
     issuesCounter: Container;
     resolvedCounter: Container;
     guestsCounter: Container;
+    
     timer: Container;
+
     groundedProgress: ProgressBar;
     
     constructor() {

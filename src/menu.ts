@@ -1,7 +1,7 @@
 import { FolderApi, Pane } from "tweakpane";
-import { sounds, GlobalPointerSteering } from "~/core";
+import { sounds, GlobalPointerSteering, isDebugOn } from "~/core";
 
-const isDebugOn = true; // replace with debug.isDebugOn after dev
+// const isDebugOn = true; // replace with debug.isDebugOn after dev
 
 let _menu: Pane | null = null;
 let _debug: FolderApi | null = null;

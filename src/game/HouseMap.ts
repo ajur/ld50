@@ -16,7 +16,11 @@ export class HouseMapLoader {
 export interface MapObjects {
     walls: Wall[],
     rooms: Room[],
-    spawn: SpawnPoint[]
+    furniture: Wall[],
+    spots: GuestSpot[],
+    nodes: PathNode[],
+    playerSpawn: SpawnPoint[],
+    guestsSpawn: SpawnPoint[]
 }
 
 export class Room extends Rectangle {
@@ -53,6 +57,16 @@ export enum RoomType {
     EXIT = "exit"
 }
 
+enum ObjectType {
+    Wall = "Wall",
+    Room = "Room",
+    Furniture = "Furniture",
+    GuestSpot = "GuestSpot",
+    PathNode = "PathNode",
+    GuestSpawnPoint = "GuestSpawnPoint",
+    PlayerSpawnPoint = "PlayerSpawnPoint",
+    Exit = "Exit",
+}
 
 export enum SpawnPointType {
     PLAYER = "player",
@@ -60,16 +74,12 @@ export enum SpawnPointType {
 }
 
 export class SpawnPoint implements IPointData {
-    x: number;
-    y: number;
-    type: SpawnPointType;
-    name: string;
-
-    constructor(x: number, y: number, type: string, name = "") {
-        this.x = x;
-        this.y = y;
-        this.type = enumFromStringValue(SpawnPointType, type);
-        this.name = name;
+    constructor(
+        readonly id: number,
+        readonly x: number,
+        readonly y: number,
+        readonly type: SpawnPointType,
+        readonly name = "") {    
     }
 
     static isPlayer(point: SpawnPoint) {
@@ -122,89 +132,121 @@ export class CircleWall extends Circle implements Wall {
     }
 }
 
+export class GuestSpot implements IPointData {
+    constructor(
+        readonly id: number,
+        readonly x: number , 
+        readonly y: number,
+        readonly limit: number,
+        readonly order: number) {
+    }
+}
+
+export class PathNode implements IPointData {
+    constructor(
+        readonly id: number,
+        readonly x: number,
+        readonly y: number,
+        readonly links: number[]){
+    }
+}
+
 export function loadMapFromTMXString(xmlstr: string): MapObjects {
     const parser = new DOMParser();
     const doc = parser.parseFromString(xmlstr, "application/xml");
 
-    const objects: Partial<MapObjects> = {};
-
-    const groups = doc.querySelectorAll("objectgroup");
-    groups.forEach(group => {
-        const groupName = group.getAttribute("name");
-        switch(groupName) {
-            case "walls": 
-                objects.walls = (objects.walls || []).concat(parseWalls(group));
-                break;
-            case "furniture":
-                objects.walls = (objects.walls || []).concat(parseWalls(group));
-                break;
-            case "rooms":
-                objects.rooms = parseRooms(group);
-                break;
-            case "spawn":
-                objects.spawn = parseSpawns(group);
-                break;
-        }
-    });
+    const objects: MapObjects = {
+        walls: objectsByType(doc, ObjectType.Wall, parseWall),
+        rooms: objectsByType(doc, ObjectType.Room, parseRoom),
+        furniture: objectsByType(doc, ObjectType.Furniture, parseWall),
+        spots: objectsByType(doc, ObjectType.GuestSpot, parseGuestSpot),
+        nodes: objectsByType(doc, ObjectType.PathNode, parsePathNode),
+        playerSpawn: objectsByType(doc, ObjectType.PlayerSpawnPoint, parseSpawn),
+        guestsSpawn: objectsByType(doc, ObjectType.GuestSpawnPoint, parseSpawn)
+    };
 
     return objects as MapObjects;
 }
 
-
-function parseWalls(group: Element): Wall[] {
-    return Array.from(group.getElementsByTagName("object")).map(obj => {
-        const isEllipse = !!obj.querySelector('ellipse');
-        const {x, y, width, height} = getObjectSpec(obj);
-
-        if (!isEllipse) {
-            return new RectWall(x, y, width, height);
-        }
-        else {
-            const r = Math.min(width, height) / 2;
-            const {x: cx, y: cy} = center(x, y, width, height);
-            return new CircleWall(cx, cy, r);
-        }
-    })
+function objectsByType<T>(doc: Document, type: ObjectType, parser: (el: Element) => T): T[] {
+    const els = doc.querySelectorAll(`object[type=${type}]`);
+    return Array.from(els).map(parser);
 }
 
-function parseRooms(group: Element): Room[] | undefined {
-    return Array.from(group.getElementsByTagName("object")).map(obj => {
-        const {x, y, width, height, type, name} = getObjectSpec(obj);
-        return new Room(x, y, width, height, type, name);
-    });
+
+function parseWall(obj: Element): Wall {
+    const isEllipse = !!obj.querySelector('ellipse');
+    const {x, y, width, height} = getObjectSpec(obj);
+
+    if (!isEllipse) {
+        return new RectWall(x, y, width, height);
+    }
+    else {
+        const r = Math.min(width, height) / 2;
+        const {x: cx, y: cy} = center(x, y, width, height);
+        return new CircleWall(cx, cy, r);
+    }
 }
 
-function parseSpawns(group: Element): SpawnPoint[] {
-    return Array.from(group.getElementsByTagName("object")).map(obj => {
-        const {x, y, name, type} = getObjectSpec(obj);
-        return new SpawnPoint(x, y, type, name);
-    });
+function parseRoom(obj: Element): Room {
+    const {x, y, width, height, name} = getObjectSpec(obj);
+    const typeVal = getProperty(obj, "roomType", "bedroom");
+    const type = enumFromStringValue(RoomType, typeVal);
+    return new Room(x, y, width, height, type, name);
+}
+
+function parseSpawn(obj: Element): SpawnPoint {
+    const {id, x, y, name, type} = getObjectSpec(obj);
+    const typeVal = type == 'PlayerSpawnPoint' ? SpawnPointType.PLAYER : SpawnPointType.GUEST;
+    return new SpawnPoint(id, x, y, typeVal, name);
+}
+
+function parseGuestSpot(obj: Element): GuestSpot {
+    const {id, x, y} = getObjectSpec(obj);
+    const limit = +getProperty(obj, "limit", "0");
+    const order = +getProperty(obj, "order", "0");
+    return new GuestSpot(id, x, y, limit, order);
+}
+
+function parsePathNode(obj: Element): PathNode {
+    const {id, x, y} = getObjectSpec(obj);
+    const links: number[] = Array.from({length: 10})
+        .map((_,idx) => +getProperty(obj, 'link'+idx, '0'))
+        .filter(prop => prop > 0)
+    return new PathNode(id, x, y, links);
 }
 
 interface ObjectSpec extends IRect {
+    id: number,
     type: string,
     name: string
 }
 
-function getPointData(obj: Element): IPointData {
-    return {
-        x: +(obj.getAttribute("x") || "0"),
-        y: +(obj.getAttribute("y") || "0")
-    }
-}
-
-function getSizeData(obj: Element): ISize {
-    return {
-        width: +(obj.getAttribute("width") || "0"),
-        height: +(obj.getAttribute("height") || "0")
-    }
-}
-
 function getObjectSpec(obj: Element): ObjectSpec {
     return {
-        ...getPointData(obj),
-        ...getSizeData(obj),
-        type: obj.getAttribute("type") || "",
-        name: obj.getAttribute("name") || ""
+        id: getNumberAttr(obj, "id"),
+        x: getNumberAttr(obj, "x"),
+        y: getNumberAttr(obj, "y"),
+        width: getNumberAttr(obj, "width"),
+        height: getNumberAttr(obj, "height"),
+        type: getStringAttr(obj, "type"),
+        name: getStringAttr(obj, "name")
     }
+}
+
+function getAttribute<T>(el: Element, name: string, fallback: T, parser: (a: string) => T): T {
+    const val = el.getAttribute(name);
+    return val != null ? parser(val) : fallback;
+}
+function getStringAttr(el: Element, name: string, fallback = ""): string {
+    return getAttribute(el, name, fallback, v => v);
+}
+function getNumberAttr(el: Element, name: string, fallback = 0): number {
+    return getAttribute(el, name, fallback, v => +v);
+}
+
+function getProperty(obj: Element, name: string): string | undefined;
+function getProperty(obj: Element, name: string, fallback: string): string;
+function getProperty(obj: Element, name: string, fallback?: string): string | undefined {
+    return obj.querySelector(`property[name=${name}]`)?.getAttribute('value') ?? fallback;
 }

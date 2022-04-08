@@ -23,6 +23,8 @@
     "d3-random": "^3.0.1",
     "gsap": "^3.9.1",
     "matter-js": "^0.18.0",
+    "ngraph.graph": "^20.0.0",
+    "ngraph.path": "^1.4.0",
     "pixi-filters": "^4.1.6",
     "pixi-tagged-text": "^3.5.1",
     "pixi-webfont-loader": "^1.0.2",

@@ -7,10 +7,10 @@ import { Guest } from "./Guest";
 import { IssueSpawner } from "./IssueSpawner";
 import { Issue } from "./Issue";
 import { CATEGORY_ISSUES } from "~/consts";
-import { randomInt } from "d3-random";
 import { clamp } from "~/core/math";
 
 import basicHouseXMLContents from "./house2.tmx?raw";
+import { GuestSpawner } from "./GuestSpawner";
 
 type LevelSpec = [string, string];
 const LEVEL_SPEC: LevelSpec = ["house2", basicHouseXMLContents];
@@ -20,6 +20,7 @@ export class GameScene extends Container implements Scene {
     house: House;
     guestsLayer: Container;
     guests: Guest[];
+    guestsSpawner: GuestSpawner;
     player: Player;
     
     physicsEngine: Engine;
@@ -31,7 +32,6 @@ export class GameScene extends Container implements Scene {
     screenHeight = 0;
 
     resolvedIssues = 0;
-    nextGuestAfterResolvedIssues = 5;
 
     playTime = 0;
     groundedProgress = 100;
@@ -49,20 +49,25 @@ export class GameScene extends Container implements Scene {
         this.issuesLayer = this.addChild(new Container());
         this.guestsLayer = this.addChild(new Container());
         
-        this.guests = this.addInitialGuests(10);
+        this.guests = [];
+        this.guestsSpawner = new GuestSpawner(this.house);
+        msg.on("spawnedGuest", this.spawnedGuest, this);
+        this.guestsSpawner.spawnInitial(10);
         
         this.player = this.addPlayer();
 
         this.issues = new Map<number, Issue>();
         this.issueSpawner = new IssueSpawner(this.house, this.guests);
-        this.issueSpawner.on("spawnedIssue", this.spawnedIssue, this);
+        msg.on("spawnedIssue", this.spawnedIssue, this);
         msg.on("issueResolved", this.issueResolved, this);
 
         Events.on(this.physicsEngine, "collisionStart", (evt) => this.onCollisionEvent(evt));
         Events.on(this.physicsEngine, "collisionEnd", (evt) => this.onCollisionEvent(evt));
 
         Ticker.shared.add(this.update, this);
-        msg.once("preloaderClosed", this.startGame, this);
+        msg.once("gameStart", this.startGame, this);
+
+        this.interactiveChildren = false;  // optimization
     }
 
     resize(width: number, height: number): void {
@@ -97,6 +102,7 @@ export class GameScene extends Container implements Scene {
         this.player.updatePosition();
         this.guests.forEach(g => g.updatePosition());
         this.updateCameraPosition();
+        msg.emit('gameUpdate', this.player, this.issues);
     }
 
     private startGame() {
@@ -104,7 +110,7 @@ export class GameScene extends Container implements Scene {
         msg.emit("issuesCounterChanged", this.issues.size);
         msg.emit("resolvedIssuesCounterChanged", this.resolvedIssues);
         msg.emit("guestsCountChanged", this.guests.length);
-        this. emitGameProgress();
+        this.emitGameProgress();
     }
 
     private gameOver() {
@@ -134,15 +140,11 @@ export class GameScene extends Container implements Scene {
         return player;
     }
 
-    private addInitialGuests(count: number): Guest[] {
-        return Array.from({ length: count }).map(() => this.addGuest());
-    }
-
-    private addGuest() {
-        const g = new Guest(this.house.getGuestSpawnPoint());
-        this.guestsLayer.addChild(g);
-        Composite.add(this.physicsEngine.world, [g.body, g.link]);
-        return g;
+    private spawnedGuest(guest: Guest) {
+        this.guests.push(guest);
+        this.guestsLayer.addChild(guest);
+        Composite.add(this.physicsEngine.world, [guest.body, guest.link]);
+        msg.emit("guestsCountChanged", this.guests.length);
     }
 
     private spawnedIssue(issue: Issue) {
@@ -165,12 +167,7 @@ export class GameScene extends Container implements Scene {
 
         this.resolvedIssues += 1;
         msg.emit("resolvedIssuesCounterChanged", this.resolvedIssues);
-        if (this.resolvedIssues >= this.nextGuestAfterResolvedIssues) {
-            this.nextGuestAfterResolvedIssues += randomInt(4,8)();
-            this.guests.push(this.addGuest());
-            msg.emit("guestsCountChanged", this.guests.length);
-        }
-
+        
         this.groundedProgress += issue.groundedDelayed;
         this.emitGameProgress();
     }

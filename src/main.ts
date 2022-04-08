@@ -8,6 +8,8 @@ import { createMenu } from './menu';
 import { HUD } from './gui/hud';
 import { GameOver } from './gui/gameover';
 import { MAP_BKG_COLOR } from './consts';
+import { Intro } from './gui/intro';
+import { IssuesMarker } from './gui/IssuesMarkers';
 
 
 // prevent context menu
@@ -34,10 +36,13 @@ function onLoaded() {
 
     const menu = createMenu();
     
-    const scene: Scene = new GameScene();
+    const scene = new GameScene();
     app.stage.addChild(scene);
     
-    const hud: HUD = new HUD();
+    const markers = new IssuesMarker();
+    app.stage.addChild(markers);
+
+    const hud = new HUD();
     app.stage.addChild(hud);
 
     const controllsOverlay = new Container();
@@ -48,10 +53,20 @@ function onLoaded() {
         backdrop.height = height;
 
         scene.resize(width, height);
+        markers.resize(width, height);
         hud.resize(width, height);
     }
     app.renderer.on('resize', onResize);
     onResize(app.screen.width, app.screen.height);
+
+    const intro = new Intro();
+    app.stage.addChild(intro);
+    intro.resize(app.screen.width, app.screen.height);
+    app.renderer.on('resize', intro.resize, intro);
+    msg.on("gameStart", () => {
+        app.renderer.off('resize', intro.resize, intro);
+    });
+    
 
     msg.on("gameOver", (spec) => {
         backdrop.interactive = false;

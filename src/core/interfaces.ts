@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { Container, IPointData, ISize } from "pixi.js";
 
 export interface Resizable {
     resize(width: number, height: number): void;
@@ -6,4 +6,8 @@ export interface Resizable {
 
 export interface Scene extends Container, Resizable {
     
+}
+
+export interface IRect extends ISize, IPointData {
+
 }

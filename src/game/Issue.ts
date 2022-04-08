@@ -16,11 +16,12 @@ export class Issue extends Container {
     private size = 64;
     private cleanRadius = 48;
 
-    private isHard = false;
-    private defaultResolutionDelay = 300;
+    readonly isHard;
+
+    private defaultResolutionDelay = 500;
     private resolutionDelay = this.defaultResolutionDelay;
     private baseResolutionTime = 2000;
-    private resolutionTimeLeft = this.baseResolutionTime;
+    private resolutionTime = this.baseResolutionTime;
     private isResolving = false;
     private isResolved = false;
 
@@ -29,8 +30,10 @@ export class Issue extends Container {
 
         this.isHard = isHard;
 
-        this.baseResolutionTime *= 2;
-        this.resolutionTimeLeft = this.baseResolutionTime;
+        if (isHard) {
+            this.baseResolutionTime *= 2;
+        }
+        this.resolutionTime = this.baseResolutionTime;
 
         this.img = this.addChild(this.createImg(isHard));
 
@@ -67,16 +70,16 @@ export class Issue extends Container {
                 this.resolutionDelay -= deltaMS;
             }
             else {
-                this.resolutionTimeLeft -= deltaMS;
+                this.resolutionTime -= deltaMS;
                 this.updateProgress();
-                if (this.resolutionTimeLeft < 0) {
+                if (this.resolutionTime < 0) {
                     this.resolved();
                 }
             }
         }
     }
 
-    resolved() {
+    private resolved() {
         this.stopResolving();
         this.isResolved = true;
         gsap.killTweensOf(this.scale);
@@ -116,7 +119,7 @@ export class Issue extends Container {
         const r0 = this.size / 2 - 1;
         const r1 = this.cleanRadius + 1;
         
-        const p = 1 - this.resolutionTimeLeft / this.baseResolutionTime;
+        const p = 1 - this.resolutionTime / this.baseResolutionTime;
         const a = clamp(p * PI_2, 0, PI_2);
 
         g.clear();

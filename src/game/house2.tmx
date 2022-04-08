@@ -1,194 +1,396 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="154">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="188">
  <imagelayer id="3" name="bkg" locked="1">
   <image source="../../public/house2.jpg" width="2048" height="2048"/>
  </imagelayer>
  <objectgroup color="#b40b080c" id="2" name="walls" locked="1">
-  <object id="1" x="640" y="288" width="48" height="256"/>
-  <object id="2" x="688" y="512" width="32" height="32"/>
-  <object id="3" x="720" y="528" width="96" height="16"/>
-  <object id="4" x="944" y="528" width="176" height="16"/>
-  <object id="5" x="1120" y="512" width="192" height="32"/>
-  <object id="6" x="1312" y="288" width="48" height="256"/>
-  <object id="9" x="1360" y="288" width="304" height="32"/>
-  <object id="10" x="1360" y="528" width="48" height="16"/>
-  <object id="11" x="1520" y="528" width="112" height="16"/>
-  <object id="12" x="1632" y="320" width="32" height="992"/>
-  <object id="13" x="1648" y="1312" width="16" height="96"/>
-  <object id="14" x="1632" y="1408" width="32" height="480"/>
-  <object id="16" x="1584" y="1856" width="48" height="32"/>
-  <object id="17" x="1184" y="1872" width="400" height="32"/>
-  <object id="18" x="1088" y="1856" width="96" height="32"/>
-  <object id="19" x="1088" y="1312" width="48" height="544"/>
-  <object id="20" x="1088" y="1280" width="160" height="32"/>
-  <object id="21" x="1360" y="1280" width="272" height="32"/>
-  <object id="22" x="1440" y="992" width="32" height="288"/>
-  <object id="23" x="1584" y="992" width="48" height="32"/>
-  <object id="24" x="1472" y="992" width="32" height="32"/>
-  <object id="25" x="1312" y="992" width="128" height="32"/>
-  <object id="28" x="1360" y="1120" width="80" height="32"/>
-  <object id="29" x="1184" y="1120" width="64" height="32"/>
-  <object id="30" x="1152" y="1120" width="32" height="160"/>
-  <object id="31" x="1088" y="1120" width="64" height="32"/>
-  <object id="32" x="1040" y="1360" width="48" height="32"/>
-  <object id="33" x="800" y="1360" width="128" height="32"/>
-  <object id="34" x="800" y="1392" width="48" height="208"/>
-  <object id="35" x="784" y="1600" width="160" height="32"/>
-  <object id="36" x="896" y="1632" width="48" height="256"/>
-  <object id="37" x="320" y="1840" width="576" height="48"/>
-  <object id="38" x="896" y="1888" width="288" height="96"/>
-  <object id="39" x="320" y="320" width="32" height="1520"/>
-  <object id="40" x="320" y="288" width="320" height="32"/>
-  <object id="45" x="336" y="48" width="160" height="240"/>
-  <object id="46" x="496" y="48" width="1168" height="64"/>
-  <object id="47" x="1600" y="112" width="64" height="176"/>
-  <object id="48" x="496" y="144" width="64" height="64">
+  <object id="1" type="Wall" x="640" y="288" width="48" height="256"/>
+  <object id="2" type="Wall" x="688" y="512" width="32" height="32"/>
+  <object id="3" type="Wall" x="720" y="528" width="96" height="16"/>
+  <object id="4" type="Wall" x="944" y="528" width="176" height="16"/>
+  <object id="5" type="Wall" x="1120" y="512" width="192" height="32"/>
+  <object id="6" type="Wall" x="1312" y="288" width="48" height="256"/>
+  <object id="9" type="Wall" x="1360" y="288" width="304" height="32"/>
+  <object id="10" type="Wall" x="1360" y="528" width="48" height="16"/>
+  <object id="11" type="Wall" x="1520" y="528" width="112" height="16"/>
+  <object id="12" type="Wall" x="1632" y="320" width="32" height="992"/>
+  <object id="13" type="Wall" x="1648" y="1312" width="16" height="96"/>
+  <object id="14" type="Wall" x="1632" y="1408" width="32" height="480"/>
+  <object id="16" type="Wall" x="1584" y="1856" width="48" height="32"/>
+  <object id="17" type="Wall" x="1184" y="1872" width="400" height="32"/>
+  <object id="18" type="Wall" x="1088" y="1856" width="96" height="32"/>
+  <object id="19" type="Wall" x="1088" y="1312" width="48" height="544"/>
+  <object id="20" type="Wall" x="1088" y="1280" width="160" height="32"/>
+  <object id="21" type="Wall" x="1360" y="1280" width="272" height="32"/>
+  <object id="22" type="Wall" x="1440" y="992" width="32" height="288"/>
+  <object id="23" type="Wall" x="1584" y="992" width="48" height="32"/>
+  <object id="24" type="Wall" x="1472" y="992" width="32" height="32"/>
+  <object id="25" type="Wall" x="1312" y="992" width="128" height="32"/>
+  <object id="28" type="Wall" x="1360" y="1120" width="80" height="32"/>
+  <object id="29" type="Wall" x="1184" y="1120" width="64" height="32"/>
+  <object id="30" type="Wall" x="1152" y="1120" width="32" height="160"/>
+  <object id="31" type="Wall" x="1088" y="1120" width="64" height="32"/>
+  <object id="32" type="Wall" x="1040" y="1360" width="48" height="32"/>
+  <object id="33" type="Wall" x="800" y="1360" width="128" height="32"/>
+  <object id="34" type="Wall" x="800" y="1392" width="48" height="208"/>
+  <object id="35" type="Wall" x="784" y="1600" width="160" height="32"/>
+  <object id="36" type="Wall" x="896" y="1632" width="48" height="256"/>
+  <object id="37" type="Wall" x="320" y="1840" width="576" height="48"/>
+  <object id="38" type="Wall" x="896" y="1888" width="288" height="96"/>
+  <object id="39" type="Wall" x="320" y="320" width="32" height="1520"/>
+  <object id="40" type="Wall" x="320" y="288" width="320" height="32"/>
+  <object id="45" type="Wall" x="336" y="48" width="160" height="240"/>
+  <object id="46" type="Wall" x="496" y="48" width="1168" height="64"/>
+  <object id="47" type="Wall" x="1600" y="112" width="64" height="176"/>
+  <object id="48" type="Wall" x="496" y="144" width="64" height="64">
    <ellipse/>
   </object>
-  <object id="49" x="496" y="224" width="48" height="48">
+  <object id="49" type="Wall" x="496" y="224" width="48" height="48">
    <ellipse/>
   </object>
-  <object id="50" x="672" y="64" width="80" height="80">
+  <object id="50" type="Wall" x="672" y="64" width="80" height="80">
    <ellipse/>
   </object>
-  <object id="51" x="752" y="64" width="96" height="96">
+  <object id="51" type="Wall" x="752" y="64" width="96" height="96">
    <ellipse/>
   </object>
-  <object id="52" x="896" y="80" width="80" height="80">
+  <object id="52" type="Wall" x="896" y="80" width="80" height="80">
    <ellipse/>
   </object>
-  <object id="53" x="976" y="80" width="80" height="80">
+  <object id="53" type="Wall" x="976" y="80" width="80" height="80">
    <ellipse/>
   </object>
-  <object id="54" x="1120" y="96" width="64" height="64">
+  <object id="54" type="Wall" x="1120" y="96" width="64" height="64">
    <ellipse/>
   </object>
-  <object id="55" x="1248" y="96" width="64" height="64">
+  <object id="55" type="Wall" x="1248" y="96" width="64" height="64">
    <ellipse/>
   </object>
-  <object id="56" x="1520" y="80" width="96" height="96">
+  <object id="56" type="Wall" x="1520" y="80" width="96" height="96">
    <ellipse/>
   </object>
-  <object id="57" x="1568" y="176" width="64" height="64">
+  <object id="57" type="Wall" x="1568" y="176" width="64" height="64">
    <ellipse/>
   </object>
-  <object id="58" x="1328" y="80" width="80" height="80">
+  <object id="58" type="Wall" x="1328" y="80" width="80" height="80">
    <ellipse/>
   </object>
-  <object id="59" x="1392" y="96" width="96" height="96">
+  <object id="59" type="Wall" x="1392" y="96" width="96" height="96">
    <ellipse/>
   </object>
-  <object id="60" x="1168" y="544" width="16" height="480"/>
-  <object id="61" x="1184" y="992" width="16" height="32"/>
-  <object id="63" x="352" y="1120" width="352" height="32"/>
-  <object id="64" x="656" y="1056" width="16" height="64"/>
-  <object id="65" x="672" y="1056" width="32" height="32"/>
-  <object id="66" x="784" y="1056" width="48" height="32"/>
-  <object id="67" x="816" y="1088" width="16" height="176"/>
-  <object id="68" x="704" y="1248" width="112" height="16"/>
-  <object id="69" x="688" y="1152" width="16" height="128"/>
-  <object id="70" x="688" y="1376" width="16" height="48"/>
-  <object id="71" x="352" y="1408" width="336" height="16"/>
-  <object id="72" x="656" y="1424" width="16" height="48"/>
-  <object id="73" x="656" y="1568" width="16" height="32"/>
-  <object id="74" x="352" y="1600" width="320" height="32"/>
+  <object id="61" type="Wall" x="1184" y="992" width="16" height="32"/>
+  <object id="63" type="Wall" x="352" y="1120" width="352" height="32"/>
+  <object id="64" type="Wall" x="656" y="1056" width="16" height="64"/>
+  <object id="65" type="Wall" x="672" y="1056" width="32" height="32"/>
+  <object id="66" type="Wall" x="784" y="1056" width="48" height="32"/>
+  <object id="67" type="Wall" x="816" y="1088" width="16" height="176"/>
+  <object id="68" type="Wall" x="704" y="1248" width="112" height="16"/>
+  <object id="69" type="Wall" x="688" y="1152" width="16" height="128"/>
+  <object id="70" type="Wall" x="688" y="1376" width="16" height="48"/>
+  <object id="71" type="Wall" x="352" y="1408" width="336" height="16"/>
+  <object id="72" type="Wall" x="656" y="1424" width="16" height="48"/>
+  <object id="73" type="Wall" x="656" y="1568" width="16" height="32"/>
+  <object id="74" type="Wall" x="352" y="1600" width="320" height="32"/>
+  <object id="187" type="Wall" x="1168" y="544" width="16" height="480"/>
  </objectgroup>
  <objectgroup color="#aa7942" id="3" name="furniture" locked="1">
-  <object id="105" x="816" y="752" width="64" height="160"/>
-  <object id="106" x="960" y="624" width="112" height="64"/>
-  <object id="107" x="1152" y="720" width="16" height="176"/>
-  <object id="108" x="528" y="672" width="80" height="272"/>
-  <object id="109" x="352" y="640" width="48" height="480"/>
-  <object id="110" x="400" y="1072" width="256" height="48"/>
-  <object id="111" x="464" y="352" width="80" height="160"/>
-  <object id="112" x="1184" y="672" width="32" height="192"/>
-  <object id="113" x="1216" y="736" width="16" height="80"/>
-  <object id="114" x="1424" y="688" width="208" height="176"/>
-  <object id="115" x="1360" y="320" width="272" height="48"/>
-  <object id="116" x="1568" y="416" width="64" height="64"/>
-  <object id="117" x="1360" y="960" width="112" height="32"/>
-  <object id="118" x="1408" y="1024" width="32" height="96"/>
-  <object id="119" x="1376" y="1152" width="64" height="128"/>
-  <object id="120" x="1184" y="1152" width="64" height="128"/>
-  <object id="121" x="592" y="1792" width="112" height="48"/>
-  <object id="122" x="864" y="1632" width="32" height="208"/>
-  <object id="123" x="368" y="1696" width="80" height="144"/>
-  <object id="124" x="352" y="1424" width="64" height="176"/>
-  <object id="125" x="464" y="1536" width="48" height="64"/>
-  <object id="126" x="496" y="1424" width="160" height="32"/>
-  <object id="127" x="464" y="1152" width="80" height="144"/>
-  <object id="128" x="352" y="1152" width="96" height="32"/>
-  <object id="129" x="976" y="768" width="80" height="80">
+  <object id="105" type="Furniture" x="816" y="752" width="64" height="160"/>
+  <object id="106" type="Furniture" x="960" y="624" width="112" height="64"/>
+  <object id="107" type="Furniture" x="1152" y="720" width="16" height="176"/>
+  <object id="108" type="Furniture" x="528" y="672" width="80" height="272"/>
+  <object id="109" type="Furniture" x="352" y="640" width="48" height="480"/>
+  <object id="110" type="Furniture" x="400" y="1072" width="256" height="48"/>
+  <object id="111" type="Furniture" x="464" y="352" width="80" height="160"/>
+  <object id="112" type="Furniture" x="1184" y="672" width="32" height="192"/>
+  <object id="113" type="Furniture" x="1216" y="736" width="16" height="80"/>
+  <object id="114" type="Furniture" x="1424" y="688" width="208" height="176"/>
+  <object id="115" type="Furniture" x="1360" y="320" width="272" height="48"/>
+  <object id="116" type="Furniture" x="1568" y="416" width="64" height="64"/>
+  <object id="117" type="Furniture" x="1360" y="960" width="112" height="32"/>
+  <object id="118" type="Furniture" x="1408" y="1024" width="32" height="96"/>
+  <object id="119" type="Furniture" x="1376" y="1152" width="64" height="128"/>
+  <object id="120" type="Furniture" x="1184" y="1152" width="64" height="128"/>
+  <object id="121" type="Furniture" x="592" y="1792" width="112" height="48"/>
+  <object id="122" type="Furniture" x="864" y="1632" width="32" height="208"/>
+  <object id="123" type="Furniture" x="368" y="1696" width="80" height="144"/>
+  <object id="124" type="Furniture" x="352" y="1424" width="64" height="176"/>
+  <object id="125" type="Furniture" x="464" y="1536" width="48" height="64"/>
+  <object id="126" type="Furniture" x="496" y="1424" width="160" height="32"/>
+  <object id="127" type="Furniture" x="464" y="1152" width="80" height="144"/>
+  <object id="128" type="Furniture" x="352" y="1152" width="96" height="32"/>
+  <object id="129" type="Furniture" x="976" y="768" width="80" height="80">
    <ellipse/>
   </object>
-  <object id="130" x="976" y="800" width="80" height="80">
+  <object id="130" type="Furniture" x="976" y="800" width="80" height="80">
    <ellipse/>
   </object>
-  <object id="131" x="1376" y="1408" width="192" height="384"/>
+  <object id="131" type="Furniture" x="1376" y="1408" width="192" height="384"/>
  </objectgroup>
- <objectgroup color="#6c00fdff" id="5" name="rooms">
-  <object id="38" name="Bathroom" type="bathroom" x="352" y="1424" width="304" height="176"/>
-  <object id="39" name="Kitchen" type="kitchen" x="352" y="640" width="288" height="480"/>
-  <object id="40" name="Your bedroom" type="bedroom" x="352" y="1632" width="512" height="208"/>
-  <object id="41" name="Parents bedroom" type="bedroom" x="1184" y="544" width="448" height="448"/>
-  <object id="42" name="Living room" type="livingroom" x="640" y="544" width="528" height="576"/>
-  <object id="43" name="Hallway" type="hall" x="704" y="1120" width="384" height="240"/>
-  <object id="44" name="Garden" type="garden" x="496" y="144" width="1104" height="144"/>
-  <object id="61" name="Exit" type="exit" x="944" y="1760" width="144" height="128"/>
-  <object id="132" name="Garden" type="garden" x="688" y="288" width="624" height="224"/>
-  <object id="133" name="Living room" type="livingroom" x="352" y="320" width="288" height="320"/>
-  <object id="134" name="Hallway" type="hall" x="704" y="1360" width="96" height="240"/>
-  <object id="135" name="Porch" type="garden" x="848" y="1392" width="240" height="208"/>
-  <object id="136" name="Parents closet" type="bedroom" x="1472" y="1024" width="160" height="256"/>
-  <object id="137" name="Parents bathroom" type="bathroom" x="1360" y="320" width="272" height="208"/>
-  <object id="138" name="Sibling bedroom" type="bedroom" x="352" y="1152" width="336" height="256"/>
-  <object id="139" name="Hallway" type="hall" x="1168" y="1024" width="240" height="96"/>
-  <object id="140" name="Garage" type="garage" x="1136" y="1312" width="496" height="544"/>
+ <objectgroup color="#6c00fdff" id="5" name="rooms" locked="1">
+  <object id="38" name="Bathroom" type="Room" x="416" y="1424" width="240" height="176">
+   <properties>
+    <property name="roomType" propertytype="RoomType" value="bathroom"/>
+   </properties>
+  </object>
+  <object id="39" name="Kitchen" type="Room" x="400" y="640" width="240" height="432">
+   <properties>
+    <property name="roomType" propertytype="RoomType" value="kitchen"/>
+   </properties>
+  </object>
+  <object id="40" name="Sibling bedroom" type="Room" x="368" y="1632" width="496" height="208"/>
+  <object id="41" name="Parents bedroom" type="Room" x="1184" y="544" width="448" height="448"/>
+  <object id="42" name="Living room" type="Room" x="640" y="544" width="528" height="576">
+   <properties>
+    <property name="roomType" propertytype="RoomType" value="livingroom"/>
+   </properties>
+  </object>
+  <object id="43" name="Hallway" type="Room" x="704" y="1120" width="384" height="240">
+   <properties>
+    <property name="roomType" propertytype="RoomType" value="hall"/>
+   </properties>
+  </object>
+  <object id="44" name="Garden" type="Room" x="560" y="144" width="1008" height="144">
+   <properties>
+    <property name="roomType" propertytype="RoomType" value="garden"/>
+   </properties>
+  </object>
+  <object id="61" name="Exit" type="Exit" x="944" y="1760" width="144" height="128"/>
+  <object id="132" name="Garden" type="Room" x="688" y="288" width="624" height="224">
+   <properties>
+    <property name="roomType" propertytype="RoomType" value="garden"/>
+   </properties>
+  </object>
+  <object id="133" name="Living room" type="Room" x="352" y="320" width="288" height="320">
+   <properties>
+    <property name="roomType" propertytype="RoomType" value="livingroom"/>
+   </properties>
+  </object>
+  <object id="134" name="Hallway" type="Room" x="704" y="1360" width="96" height="240">
+   <properties>
+    <property name="roomType" propertytype="RoomType" value="hall"/>
+   </properties>
+  </object>
+  <object id="135" name="Porch" type="Room" x="848" y="1392" width="240" height="208">
+   <properties>
+    <property name="roomType" propertytype="RoomType" value="garden"/>
+   </properties>
+  </object>
+  <object id="136" name="Parents closet" type="Room" x="1472" y="1024" width="160" height="256"/>
+  <object id="137" name="Parents bathroom" type="Room" x="1360" y="368" width="272" height="160">
+   <properties>
+    <property name="roomType" propertytype="RoomType" value="bathroom"/>
+   </properties>
+  </object>
+  <object id="138" name="Your bedroom" type="Room" x="352" y="1152" width="336" height="256"/>
+  <object id="139" name="Hallway" type="Room" x="1168" y="1024" width="240" height="96">
+   <properties>
+    <property name="roomType" propertytype="RoomType" value="hall"/>
+   </properties>
+  </object>
+  <object id="140" name="Garage" type="Room" x="1136" y="1312" width="496" height="544">
+   <properties>
+    <property name="roomType" propertytype="RoomType" value="garage"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup color="#ef3128" id="4" name="spawn" locked="1">
-  <object id="37" name="player_1" type="player" x="1008" y="1056">
+ <objectgroup id="4" name="spawnPoints" locked="1">
+  <object id="156" name="player_1" type="PlayerSpawnPoint" x="1008" y="1040">
    <point/>
   </object>
-  <object id="60" name="Guest 1" type="guest" x="1008" y="816">
+ </objectgroup>
+ <objectgroup color="#ef3128" id="4" name="guestPoints">
+  <object id="60" name="Spot" type="GuestSpot" x="1008" y="816">
+   <properties>
+    <property name="limit" type="int" value="6"/>
+    <property name="order" type="int" value="1"/>
+   </properties>
    <point/>
   </object>
-  <object id="141" name="Guest 2" type="guest" x="624" y="672">
+  <object id="141" name="Spot" type="GuestSpot" x="640" y="640">
+   <properties>
+    <property name="limit" type="int" value="4"/>
+    <property name="order" type="int" value="1"/>
+   </properties>
    <point/>
   </object>
-  <object id="142" name="Guest 3" type="guest" x="528" y="960">
+  <object id="142" name="Spot" type="GuestSpot" x="528" y="960">
+   <properties>
+    <property name="limit" type="int" value="3"/>
+    <property name="order" type="int" value="1"/>
+   </properties>
    <point/>
   </object>
-  <object id="143" name="Guest 4" type="guest" x="960" y="1216">
+  <object id="143" name="Spot" type="GuestSpot" x="1024" y="1248">
+   <properties>
+    <property name="limit" type="int" value="3"/>
+    <property name="order" type="int" value="31"/>
+   </properties>
    <point/>
   </object>
-  <object id="144" name="Guest 5" type="guest" x="592" y="1536">
+  <object id="144" name="Spot" type="GuestSpot" x="592" y="1536">
+   <properties>
+    <property name="limit" type="int" value="1"/>
+    <property name="order" type="int" value="10"/>
+   </properties>
    <point/>
   </object>
-  <object id="145" name="Guest 6" type="guest" x="736" y="1744">
+  <object id="145" name="Spot" type="GuestSpot" x="736" y="1744">
+   <properties>
+    <property name="limit" type="int" value="2"/>
+    <property name="order" type="int" value="60"/>
+   </properties>
    <point/>
   </object>
-  <object id="146" name="Guest 7" type="guest" x="1008" y="1504">
+  <object id="146" name="Spot" type="GuestSpot" x="928" y="1504">
+   <properties>
+    <property name="limit" type="int" value="2"/>
+    <property name="order" type="int" value="40"/>
+   </properties>
    <point/>
   </object>
-  <object id="147" name="Guest 8" type="guest" x="848" y="416">
+  <object id="147" name="Spot" type="GuestSpot" x="848" y="416">
+   <properties>
+    <property name="limit" type="int" value="5"/>
+    <property name="order" type="int" value="20"/>
+   </properties>
    <point/>
   </object>
-  <object id="148" name="Guest 9" type="guest" x="1248" y="256">
+  <object id="148" name="Spot" type="GuestSpot" x="1248" y="256">
+   <properties>
+    <property name="limit" type="int" value="3"/>
+    <property name="order" type="int" value="45"/>
+   </properties>
    <point/>
   </object>
-  <object id="149" name="Guest 10" type="guest" x="1328" y="800">
+  <object id="149" name="Spot" type="GuestSpot" x="1312" y="768">
+   <properties>
+    <property name="limit" type="int" value="3"/>
+    <property name="order" type="int" value="50"/>
+   </properties>
    <point/>
   </object>
-  <object id="150" name="Guest 11" type="guest" x="1456" y="448">
+  <object id="150" name="Spot" type="GuestSpot" x="1520" y="448">
+   <properties>
+    <property name="limit" type="int" value="1"/>
+    <property name="order" type="int" value="52"/>
+   </properties>
    <point/>
   </object>
-  <object id="151" name="Guest 12" type="guest" x="1552" y="1152">
+  <object id="151" name="Spot" type="GuestSpot" x="1552" y="1152">
+   <properties>
+    <property name="limit" type="int" value="2"/>
+    <property name="order" type="int" value="55"/>
+   </properties>
    <point/>
   </object>
-  <object id="152" name="Guest 13" type="guest" x="1264" y="1456">
+  <object id="152" name="Spot" type="GuestSpot" x="1264" y="1456">
+   <properties>
+    <property name="limit" type="int" value="4"/>
+    <property name="order" type="int" value="42"/>
+   </properties>
    <point/>
   </object>
-  <object id="153" name="Guest 14" type="guest" x="512" y="1280">
+  <object id="153" name="Spot" type="GuestSpot" x="512" y="1280">
+   <properties>
+    <property name="limit" type="int" value="2"/>
+    <property name="order" type="int" value="30"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="172" type="PathNode" x="960" y="1024">
+   <properties>
+    <property name="link1" type="object" value="173"/>
+    <property name="link2" type="object" value="180"/>
+    <property name="link3" type="object" value="143"/>
+    <property name="link4" type="object" value="60"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="173" type="PathNode" x="720" y="960">
+   <properties>
+    <property name="link1" type="object" value="142"/>
+    <property name="link2" type="object" value="174"/>
+    <property name="link3" type="object" value="141"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="174" type="PathNode" x="784" y="672">
+   <properties>
+    <property name="link1" type="object" value="175"/>
+    <property name="link2" type="object" value="0"/>
+    <property name="link3" type="object" value="0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="175" type="PathNode" x="912" y="496">
+   <properties>
+    <property name="link1" type="object" value="147"/>
+    <property name="link2" type="object" value="148"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="176" type="PathNode" x="976" y="1296">
+   <properties>
+    <property name="link1" type="object" value="178"/>
+    <property name="link2" type="object" value="172"/>
+    <property name="link3" type="object" value="177"/>
+    <property name="link4" type="object" value="0"/>
+    <property name="link5" type="object" value="0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="177" type="PathNode" x="1008" y="1600">
+   <properties>
+    <property name="link1" type="object" value="185"/>
+    <property name="link2" type="object" value="146"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="178" type="PathNode" x="752" y="1328">
+   <properties>
+    <property name="link1" type="object" value="179"/>
+    <property name="link2" type="object" value="153"/>
+    <property name="link3" type="object" value="0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="179" type="PathNode" x="736" y="1520">
+   <properties>
+    <property name="link1" type="object" value="144"/>
+    <property name="link2" type="object" value="145"/>
+    <property name="link3" type="object" value="0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="180" type="PathNode" x="1248" y="1072">
+   <properties>
+    <property name="link1" type="object" value="182"/>
+    <property name="link2" type="object" value="181"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="181" type="PathNode" x="1328" y="1344">
+   <properties>
+    <property name="link1" type="object" value="152"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="182" type="PathNode" x="1296" y="912">
+   <properties>
+    <property name="link1" type="object" value="149"/>
+    <property name="link2" type="object" value="183"/>
+    <property name="link3" type="object" value="150"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="183" type="PathNode" x="1552" y="944">
+   <properties>
+    <property name="link1" type="object" value="0"/>
+    <property name="link2" type="object" value="151"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="185" name="Guest spawn point" type="GuestSpawnPoint" x="1024" y="1952">
    <point/>
   </object>
  </objectgroup>
