@@ -16,6 +16,7 @@ export class GlobalPointerSteering {
     private vectorMaxMagnitude = 64;
     private currentMoveVector = Vector.create(0, 0);
     private _showPointerHelper = true;
+    private _deadZone = 0.1;
     
     private static instance: GlobalPointerSteering | null = null;
     
@@ -120,8 +121,8 @@ export class GlobalPointerSteering {
         this.pointerPos.visible = this.showPointerHelper;
 
         const vpmn = vpm / this.vectorMaxMagnitude;
-        const vpmn3 = vpmn ** 2;  // scale for better progression
-        this.currentMoveVector = Vector.mult(normed, vpmn3);
+        const vpmn2 = vpmn < this._deadZone ? 0 : vpmn;
+        this.currentMoveVector = Vector.mult(normed, vpmn2);
     }
 
     private pointerHelper(radius: number): Graphics {
