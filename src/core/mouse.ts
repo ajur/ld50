@@ -3,7 +3,6 @@ import { Container, Graphics, InteractionEvent } from "pixi.js";
 import { Pane } from "tweakpane";
 import { localLoadDefault, localSave } from "./storage";
 import { clamp } from "./math";
-import { hslToHsv } from "@tweakpane/core/dist/cjs/input-binding/color/model/color-model";
 
 
 const STORAGE_KEY = "steeringSettings";
