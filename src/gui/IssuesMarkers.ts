@@ -82,7 +82,7 @@ export class IssuesMarker extends Container {
         const g = Sprite.from("marker");
         g.anchor.set(1, 0.5);
         g.scale.set(0.5);
-        // g.alpha = 0.5;
+        g.alpha = 0.7;
         return this.addChild(g);
     }
 }

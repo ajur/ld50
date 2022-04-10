@@ -52,7 +52,7 @@ Congrats!`, {
         const {width, height} = text.getBounds();
         text.position.set(-width / 2, -height / 2 + 50);
         text.debugContainer.destroy(); // hack to get proper bounds
-        return this.addChild(text);
+        return text;
     }
 
     private createTitle(): Text {

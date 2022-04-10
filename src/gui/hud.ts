@@ -19,7 +19,7 @@ export class HUD extends Container implements Scene {
         this.resolvedCounter = this.addCounter("solved", "resolvedIssuesCounterChanged", COLORS.GREEN);
         this.guestsCounter = this.addCounter("guests", "guestsCountChanged", COLORS.VIOLET);
 
-        this.timer = this.addCounter("party time", "playTimeUpdated", COLORS.WHITE, 0.5, timeCounterFormatter);
+        this.timer = this.addCounter("party time", "playTimeUpdated", COLORS.BLUE, 0.5, timeCounterFormatter);
 
         this.groundedProgress = this.addProgressBar("chaos level", "groundedProgressChanged");
     }
@@ -77,7 +77,7 @@ export class HUD extends Container implements Scene {
             counter.text = formatUpdate(count);
         })
         
-        container.addChild(counter, label);
+        container.addChild(label, counter);
         return this.addChild(container);
     }
 
@@ -160,11 +160,11 @@ class ProgressBar extends Container {
     }
 }
 
-function hudText(text: string, fontSize = 32, fill = COLOR_TEXT): Text {
+function hudText(text: string, fontSize = 32, fill = COLOR_TEXT, stroke = COLORS.WHITE): Text {
     const txt = new Text(text, {
         fill,
         fontSize,
-        stroke: 0xffffff,
+        stroke,
         strokeThickness: 2,
         padding: 10,
         fontFamily: "Haeresletter"

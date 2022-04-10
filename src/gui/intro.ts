@@ -32,10 +32,10 @@ export class Intro extends Modal {
 Your birthday party startet to go slightly out of hand,
 new and unknown <g>guests</g> are still comming,
 making more mess than you imagined.
-But hay, it's still managable... for now.
+But hey, it's still managable... for now.
 
 Handle <i>issues</i> and fix <hi>broken stuff</hi>,
-to delay the moment you'r parents are called.
+to delay the moment your parents are called.
 
 How long can you make the party going?
 `, {

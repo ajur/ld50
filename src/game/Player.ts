@@ -50,7 +50,7 @@ export class Player extends Container {
             this.applyMoveVector(Keyboard.moveVector());
         }
         else if (GlobalPointerSteering.isMoving) {
-            this.applyMoveVector(GlobalPointerSteering.moveVector());
+            this.applyMoveVector(GlobalPointerSteering.moveVector);
         }
     }
 
