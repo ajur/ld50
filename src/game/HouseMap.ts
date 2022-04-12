@@ -3,8 +3,8 @@ import { enumFromStringValue } from "~/core/func";
 import { Bodies, Body } from "matter-js";
 import { circleWireframe, rectWireframe } from "~/core/display";
 import { randomInt } from "d3-random";
-import { center, clamp } from "~/core/math";
-import { CATEGORY_WALLS, COLORS } from "~/consts";
+import { center, clamp, Rect } from "~/core/math";
+import { CATEGORY_PLAYER, CATEGORY_ROOMS, CATEGORY_WALLS, COLORS } from "~/consts";
 import { IRect } from "~/core";
 
 export class HouseMapLoader {
@@ -23,19 +23,28 @@ export interface MapObjects {
     guestsSpawn: SpawnPoint[]
 }
 
-export class Room extends Rectangle {
+export class Room extends Rect {
     readonly roomType: RoomType;
     readonly roomName: string;
-    xPosRng: () => number;
-    yPosRng: () => number;
+    readonly body: Body;
+    private xPosRng: () => number;
+    private yPosRng: () => number;
 
-    constructor(x: number, y: number, w: number, h: number, type: string, name: string) {
-        super(x, y, w, h);
+    constructor(x: number, y: number, width: number, height: number, type: string, name: string) {
+        super(x, y, width, height);
         this.roomType = enumFromStringValue(RoomType, type);
         this.roomName = name;
 
         this.xPosRng = randomInt(this.left, this.right);
         this.yPosRng = randomInt(this.top, this.bottom);
+
+        this.body = Bodies.rectangle(this.cx, this.cy, width, height, {
+            isSensor: true,
+            collisionFilter: {
+                category: CATEGORY_ROOMS,
+                mask: CATEGORY_PLAYER
+            }
+        });
     }
 
     randomPoint(offset = 0): IPointData {
@@ -64,8 +73,7 @@ enum ObjectType {
     GuestSpot = "GuestSpot",
     PathNode = "PathNode",
     GuestSpawnPoint = "GuestSpawnPoint",
-    PlayerSpawnPoint = "PlayerSpawnPoint",
-    Exit = "Exit",
+    PlayerSpawnPoint = "PlayerSpawnPoint"
 }
 
 export enum SpawnPointType {

@@ -2,7 +2,7 @@ import './hello.ts';
 import './main.css';
 import { Application, Container, Sprite, Texture } from 'pixi.js';
 import { assets } from './assets';
-import { preload, withGlobals, GlobalPointerSteering, msg } from '~/core';
+import { preload, withGlobals, GlobalPointerSteering, msg, sounds } from '~/core';
 import { GameScene } from './game/GameScene';
 import { createMenu } from './menu';
 import { HUD } from './gui/hud';
@@ -90,5 +90,5 @@ function onLoaded() {
 }
 
 function onClicked() {
-    // sounds.playMusic('simon_music');
+    sounds.playMusic('theme');
 }

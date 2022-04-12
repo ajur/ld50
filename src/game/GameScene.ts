@@ -1,6 +1,6 @@
 import { Body, Composite, Engine, Events, IEventCollision, IPair } from "matter-js";
 import { Container, Ticker } from "pixi.js";
-import { msg, Scene } from "~/core";
+import { msg, Scene, sounds } from "~/core";
 import { Player } from "./Player";
 import { House } from "./House";
 import { Guest } from "./Guest";
@@ -11,6 +11,8 @@ import { clamp } from "~/core/math";
 
 import basicHouseXMLContents from "./house2.tmx?raw";
 import { GuestSpawner } from "./GuestSpawner";
+import { Room } from "./HouseMap";
+import { sound } from "@pixi/sound";
 
 type LevelSpec = [string, string];
 const LEVEL_SPEC: LevelSpec = ["house2", basicHouseXMLContents];
@@ -22,6 +24,7 @@ export class GameScene extends Container implements Scene {
     guests: Guest[];
     guestsSpawner: GuestSpawner;
     player: Player;
+    currentRoom: Room;
     
     physicsEngine: Engine;
     issueSpawner: IssueSpawner;
@@ -55,6 +58,7 @@ export class GameScene extends Container implements Scene {
         this.guestsSpawner.spawnInitial(10);
         
         this.player = this.addPlayer();
+        this.currentRoom = this.house.roomAt(this.player.position) || this.house.rooms[0];
 
         this.issues = new Map<number, Issue>();
         this.issueSpawner = new IssueSpawner(this.house, this.guests);
@@ -76,16 +80,6 @@ export class GameScene extends Container implements Scene {
         this.updateCameraPosition();
     }
 
-    updateCameraPosition() {
-        const cx = this.screenWidth / 2;
-        const cy = this.screenHeight / 2;
-        
-        const ox = cx - this.player.x;
-        const oy = cy - this.player.y;
-
-        this.position.set(ox, oy);
-    }
-
     update() {
         const deltaMS = Ticker.shared.deltaMS;
         if (!this.isPaused) {
@@ -99,10 +93,29 @@ export class GameScene extends Container implements Scene {
         
         Engine.update(this.physicsEngine, deltaMS);
         
-        this.player.updatePosition();
         this.guests.forEach(g => g.updatePosition());
+        this.player.updatePosition();
         this.updateCameraPosition();
+        this.updateRoom();
         msg.emit('gameUpdate', this.player, this.issues);
+    }
+
+    updateCameraPosition() {
+        const cx = this.screenWidth / 2;
+        const cy = this.screenHeight / 2;
+        
+        const ox = cx - this.player.x;
+        const oy = cy - this.player.y;
+
+        this.position.set(ox, oy);
+    }
+
+    updateRoom() {
+        const room = this.house.roomAt(this.player.position);
+        if (room && room !== this.currentRoom) {
+            this.currentRoom = room;
+            msg.emit('enteredRoom', room);
+        }
     }
 
     private startGame() {
@@ -111,10 +124,17 @@ export class GameScene extends Container implements Scene {
         msg.emit("resolvedIssuesCounterChanged", this.resolvedIssues);
         msg.emit("guestsCountChanged", this.guests.length);
         this.emitGameProgress();
+        sounds.playMusic('track_main', {startAt: 0});
     }
 
     private gameOver() {
         this.isPaused = true;
+        sound.play('record_scratch', {volume: 0.5});
+        setTimeout(() => {
+            sound.play('door_slam');
+            sounds.stopMusic(false);
+            sounds.playMusic('theme', {startAt: 60, fadeTime: 5});
+        }, 300);
         msg.emit("gameOver", {
             resolved: this.resolvedIssues,
             left: this.issues.size,

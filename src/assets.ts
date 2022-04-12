@@ -7,7 +7,12 @@ export function assets(): IAddOptions[] {
         { name: "ld50splash", url: "ld50aniversary.jpeg" },
         // { name: "basicHouse", url: "basicHouse.jpg"}
         { name: "house2", url: "house2.jpg"},
-        { name: "marker", url: "marker.png"}
+        { name: "marker", url: "marker.png"},
+        { name: "door_slam", url: "door_slam.mp3"},
+        { name: "record_scratch", url: "record-scratch.mp3"},
+        { name: "theme", url: "theme.m4a"},
+        { name: "track_alt", url: "track_alt.m4a"},
+        { name: "track_main", url: "track_main.m4a"},
     ].map(fixBasePath);
 }
 

@@ -1,5 +1,5 @@
 import { Container, IPointData, Sprite } from "pixi.js";
-import { HouseMapLoader, SpawnPoint, Wall, Room, GuestSpot, MapObjects, PathNode } from "./HouseMap";
+import { HouseMapLoader, SpawnPoint, Wall, Room, GuestSpot, MapObjects, PathNode, RoomType } from "./HouseMap";
 import { addDebugMenu } from "~/menu";
 import { FolderApi } from "tweakpane";
 import { Body, Vector } from "matter-js";
@@ -8,6 +8,7 @@ import { Guest } from "./Guest";
 import createGraph from "ngraph.graph";
 import { lineWireframe, rectWireframe } from "~/core/display";
 import { COLORS } from "~/consts";
+import { msg, sounds } from "~/core";
 
 
 export class House extends Container {
@@ -37,6 +38,8 @@ export class House extends Container {
         this._wallsContainer = this.addWallsContainer(objects);
         this._pathContainer = this.addPathsContainer(objects);
 
+        msg.on('enteredRoom', this.onEnteredRoom, this);
+
         addDebugMenu("house", this.debugMenu, this);
     }
 
@@ -54,6 +57,10 @@ export class House extends Container {
         return this.walls.map(w => w.body);
     }
 
+    roomAt(pos: IPointData): Room | undefined {
+        return this.rooms.find(room => room.contains(pos.x, pos.y));
+    }
+
     randomPointNearGuest(guest: Guest): IPointData {
         const room = this.rooms.find(r => r.contains(guest.x, guest.y));
         if (room){ 
@@ -66,6 +73,21 @@ export class House extends Container {
         }
         // fallback
         return guest.position;
+    }
+
+    onEnteredRoom(room: Room) {
+        switch(room.roomType) {
+            case RoomType.LIVINGROOM:
+            case RoomType.KITCHEN:
+                sounds.playMusic('track_main');
+                break;
+            case RoomType.HALL:
+                sounds.playMusic('track_main', {eq: 'mid'});
+                break;
+            default:
+                sounds.playMusic('track_main', {eq: 'low'});
+                break;
+        }
     }
 
     private notBlocked(pos: IPointData): boolean {
@@ -101,6 +123,8 @@ export class House extends Container {
                 graph.addLink(node.id, targetId, {render, dist});
             }
         }
+
+        // TODO guests walking between spots
 
         // const nodesDistance = (fromNode: Node, toNode: Node) => Vector.magnitude(Vector.sub(fromNode.data.node, toNode.data.node));
 

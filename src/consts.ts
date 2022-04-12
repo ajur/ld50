@@ -23,7 +23,8 @@ export const MAP_BKG_COLOR = 0xf3f3f5;
 
 
 // collision categories
-export const CATEGORY_WALLS  = 0b1000;
-export const CATEGORY_PLAYER = 0b0100;
-export const CATEGORY_GUESTS = 0b0010;
-export const CATEGORY_ISSUES = 0b0001;
+export const CATEGORY_WALLS  = 0b1;
+export const CATEGORY_PLAYER = 0b10;
+export const CATEGORY_GUESTS = 0b100;
+export const CATEGORY_ISSUES = 0b1000;
+export const CATEGORY_ROOMS  = 0b10000;

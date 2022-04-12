@@ -1,12 +1,16 @@
 import { IPointData, ISize, Rectangle } from "pixi.js";
 import { IRect } from "./interfaces";
 
-const {abs} = Math;
+const {abs, floor} = Math;
 const EPSILON = Number.EPSILON;
 
 export const withinEpsilon = (v1: number, v2: number): boolean => (
     abs(v1 - v2) < EPSILON
 );
+
+export const modulo = (a: number, d: number) => (
+    a - d * floor(a / d)
+)
 
 export const clamp = (val: number, min: number, max: number): number => (
     val < min ? min : val > max ? max : val

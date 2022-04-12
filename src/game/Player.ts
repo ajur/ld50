@@ -5,6 +5,7 @@ import { GlobalPointerSteering, Keyboard, msg } from "~/core";
 import { addDebugMenu } from "~/menu";
 import { CATEGORY_PLAYER, COLOR_PLAYER } from "~/consts";
 import { Issue } from "./Issue";
+import { Room } from "./HouseMap";
 
 
 export class Player extends Container {
@@ -79,6 +80,14 @@ export class Player extends Container {
 
     issueResolved(issue: Issue) {
         this.activeIssues.delete(issue);
+    }
+
+    entersRooms(rooms: Room[]) {
+        console.log("entersRooms", rooms.map(r => r.roomName))
+    }
+
+    exitsRooms(rooms: Room[]) {
+        console.log("exitsRooms", rooms.map(r => r.roomName));
     }
 
     private createImg() {

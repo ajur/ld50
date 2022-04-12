@@ -3,7 +3,6 @@ import { gsap } from "gsap";
 import { WebfontLoaderPlugin } from "pixi-webfont-loader";
 import { IAddOptions, Loader } from 'pixi.js';
 import { msg } from '.';
-import { isDebugOn } from "./debug";
 
 Loader.registerPlugin(WebfontLoaderPlugin);
 
@@ -49,10 +48,6 @@ export function preload({assets, onLoaded, onClicked, onRevealed, revealTime = 0
         preloaderDiv.addEventListener('pointerdown', preloaderClicked, {once: true});
         msg.emit("assetsLoaded");
         onLoaded(...args);
-
-        if (isDebugOn) {
-            preloaderDiv.dispatchEvent(new Event("pointerdown"));
-        }
     }
 
     const updateProgress: Loader.OnProgressSignal = (progLoader: Loader) => {

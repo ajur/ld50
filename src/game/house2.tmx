@@ -154,7 +154,11 @@
     <property name="roomType" propertytype="RoomType" value="garden"/>
    </properties>
   </object>
-  <object id="61" name="Exit" type="Exit" x="944" y="1760" width="144" height="128"/>
+  <object id="61" name="Exit" type="Room" x="944" y="1760" width="144" height="128">
+   <properties>
+    <property name="roomType" propertytype="RoomType" value="exit"/>
+   </properties>
+  </object>
   <object id="132" name="Garden" type="Room" x="688" y="288" width="624" height="224">
    <properties>
     <property name="roomType" propertytype="RoomType" value="garden"/>

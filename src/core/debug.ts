@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import * as PIXI from 'pixi.js';
 import * as SOUND from '@pixi/sound';
 import { Pane } from 'tweakpane';
+import { sounds } from './sounds';
 
 export function withGlobals(app: PIXI.Application, menu: Pane) {
     if (import.meta.env.PROD) {
@@ -25,6 +26,8 @@ export function withGlobals(app: PIXI.Application, menu: Pane) {
     global.APP = app;
     console.log('- MENU - tweakpane, until I replace it with something custom')
     global.MENU = menu;
+    console.log('- SOUNDS - for music mostly')
+    global.SOUNDS = sounds;
 }
 
 export const isDebugOn = import.meta.env.DEV;
