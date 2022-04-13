@@ -4,8 +4,6 @@ import { IAddOptions, LoaderResource } from "pixi.js";
 export function assets(): IAddOptions[] {
     return [
         { name: "Haeresletter", url: "Haeresletter.otf"},
-        { name: "ld50splash", url: "ld50aniversary.jpeg" },
-        // { name: "basicHouse", url: "basicHouse.jpg"}
         { name: "house2", url: "house2v2.jpg"},
         { name: "marker", url: "marker.png"},
         { name: "door_slam", url: "door_slam.mp3"},
