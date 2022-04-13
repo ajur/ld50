@@ -4,7 +4,7 @@ import { Bodies, Body } from "matter-js";
 import { circleWireframe, rectWireframe } from "~/core/display";
 import { randomInt } from "d3-random";
 import { center, clamp, Rect } from "~/core/math";
-import { CATEGORY_PLAYER, CATEGORY_ROOMS, CATEGORY_WALLS, COLORS } from "~/consts";
+import { CATEGORY_WALLS, COLORS } from "~/consts";
 import { IRect } from "~/core";
 
 export class HouseMapLoader {
@@ -26,7 +26,6 @@ export interface MapObjects {
 export class Room extends Rect {
     readonly roomType: RoomType;
     readonly roomName: string;
-    readonly body: Body;
     private xPosRng: () => number;
     private yPosRng: () => number;
 
@@ -37,14 +36,6 @@ export class Room extends Rect {
 
         this.xPosRng = randomInt(this.left, this.right);
         this.yPosRng = randomInt(this.top, this.bottom);
-
-        this.body = Bodies.rectangle(this.cx, this.cy, width, height, {
-            isSensor: true,
-            collisionFilter: {
-                category: CATEGORY_ROOMS,
-                mask: CATEGORY_PLAYER
-            }
-        });
     }
 
     randomPoint(offset = 0): IPointData {
